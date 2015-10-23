@@ -23,7 +23,7 @@
 		<link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
 
 		<!-- Font Awesome CSS -->
-		<link href="assets/fonts/font-awesome/css/font-awesome.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
 		<!-- Plugins -->
 		<link href="assets/css/animations.css" rel="stylesheet">
@@ -53,7 +53,7 @@
 
 							<!-- logo -->
 							<div class="logo smooth-scroll">
-								<a href="#banner"><img id="logo" src="assets/images/logo.png" alt="Worthy"></a>
+								<a href="#banner"><img id="logo" src="assets/images/logo.png" alt="eTrust"></a>
 							</div>
 
 							<!-- name-and-slogan -->
@@ -96,9 +96,9 @@
 											<ul class="nav navbar-nav navbar-right">
 												<li class="active"><a href="#banner">Inicio</a></li>
 												<li><a href="#about">eTrust</a></li>
-												<li><a href="#services">Módulos</a></li>
-												<li><a href="#portfolio">Contribuye</a></li>
-												<li><a href="#clients">Configuración</a></li>
+												<li><a href="#modules">Módulos</a></li>
+												<li><a href="#configuration">Configuración</a></li>
+												<li><a href="#contribute">Contribuye</a></li>
 												<li><a href="#contact">Contacto</a></li>
 											</ul>
 										</div>
@@ -127,13 +127,25 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-md-8 col-md-offset-2 object-non-visible" data-animation-effect="fadeIn">
-							<h1 class="text-center">e<span>Trust</span></h1>
-							<p class="lead text-center">Integra módulos independientes a tu solución e-commerce.</p>
-							<p class="lead text-center"><a href="#">Adiciona módulos</a> <a style="
-    padding-left: 60px;
-"href="#">Configura tus módulos</a></p>
+							
+							<div class = "row">
+								<h1 class="text-center">e<span>Trust</span></h1>
+								<p class="lead text-center">Integra módulos independientes a tu solución e-commerce.</p>
+							</div>
+							<div class = "row text-center">
+								<a class="btn btn-success" href="modules/integration/settings.html"><i class="fa fa-play"></i>&nbsp;Empieza ahora</a>
+								<a style="margin-left: 40px;" class="btn btn-info" href="#"><i class="fa fa-cart-plus"></i>&nbsp;Adiciona módulos</a> 
+								<a style="margin-left: 40px;" href="#" class="btn btn-info"><i class="fa fa-cog"></i>&nbsp;Configura tus módulos</a>
+							</div>
+							
+							<div class = "row text-center" style="display: none;margin-top: 30px;">
+								<a class="btn btn-success" href="#"><i class="fa fa-file-text-o"></i>&nbsp;Documentación del trabajo de grado</a> 
+							</div>
+							
 						</div>
-					</div>
+						</div>
+						
+						
 				</div>
 			</div>
 		</div>
@@ -176,7 +188,7 @@
 		<!-- ================ -->
 		<div class="section translucent-bg bg-image-1 blue">
 			<div class="container object-non-visible" data-animation-effect="fadeIn">
-				<h1 id="services"  class="text-center title">Módulos de para integrar</h1>
+				<h1 id="modules"  class="text-center title">Módulos disponibles</h1>
 				<div class="space"></div>
 				<div class="row">
 					<div class="col-sm-6">
@@ -267,7 +279,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-8 col-md-offset-2">
-						<h1 class="text-center">Constrúyamoslo juntos!</h1>
+						<h1 class="text-center">Integra fácilmente</h1>
 					</div>
 				</div>
 			</div>
@@ -278,7 +290,7 @@
 		<!-- ================ -->
 		<div class="section">
 			<div class="container">
-				<h1 class="text-center title" id="portfolio">Contribuye</h1>
+				<h1 class="text-center title" id="configuration">Configuración de módulos</h1>
 				<div class="separator"></div>
 				<p class="lead text-center">Lorem ipsum dolor sit amet laudantium molestias similique.<br> Quisquam incidunt ut laboriosam.</p>
 				<br>			
@@ -791,7 +803,7 @@
 		<!-- ================ -->
 		<div class="section translucent-bg bg-image-2 pb-clear">
 			<div class="container object-non-visible" data-animation-effect="fadeIn">
-				<h1 id="clients" class="title text-center">Configuración de los módulos</h1>
+				<h1 id="contribute" class="title text-center">Contribuye</h1>
 				<div class="space"></div>
 				<div class="row">
 					<div class="col-md-4">
@@ -1037,6 +1049,8 @@
 
 		<!-- Custom Scripts -->
 		<script type="text/javascript" src="assets/js/custom.js"></script>
+		
+		
 
 	</body>
 </html>
