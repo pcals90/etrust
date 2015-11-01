@@ -47,11 +47,7 @@
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 
-  <bean
-    class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-    <property name="prefix" value="/" />
-    <property name="suffix" value=".html" />
-</bean>
+  <mvc:resources mapping="/static/**" location="/static/" />
 
 	<bean
 		class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" />
