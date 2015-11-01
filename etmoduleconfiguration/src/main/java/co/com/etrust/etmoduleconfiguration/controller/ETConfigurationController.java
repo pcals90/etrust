@@ -1,5 +1,6 @@
 package co.com.etrust.etmoduleconfiguration.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +13,7 @@ import co.com.etrust.etmoduleconfiguration.response.dto.ETConfigurationResponseD
 import co.com.etrust.etmoduleconfiguration.response.dto.ETExistingInitialConfDTO;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETResponseStatus;
 import co.com.etrust.etmoduleconfiguration.service.ETInitialConfigurationService;
+import javassist.bytecode.stackmap.TypeData.ClassName;
 
 @Controller
 public class ETConfigurationController {
@@ -19,6 +21,8 @@ public class ETConfigurationController {
 	@Autowired
 	private ETInitialConfigurationService initialConfService;
 
+	private static final Logger log = Logger.getLogger( ClassName.class.getName() );
+	
 	@RequestMapping(value = "/initialconf/test", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody Object test() {
 
@@ -36,6 +40,7 @@ public class ETConfigurationController {
 		return new ETConfigurationResponseDTO(initialConfService.testConnection(host, port, dbName,user, password, dbProvider), "Ok",
 				ETResponseStatus.SUCCESS);
 		}catch(Exception e){
+			e.printStackTrace();
 			return new ETConfigurationResponseDTO(null, "FAIL :: "+e.getMessage(),
 					ETResponseStatus.ERROR);
 		}
@@ -50,6 +55,7 @@ public class ETConfigurationController {
 		return new ETConfigurationResponseDTO(initialConfService.getExistingConfiguration(), "Ok",
 				ETResponseStatus.SUCCESS);
 		}catch(Exception e){
+			e.printStackTrace();
 			return new ETConfigurationResponseDTO(null, "FAIL :: "+e.getMessage(),
 					ETResponseStatus.ERROR);
 		}
@@ -63,6 +69,22 @@ public class ETConfigurationController {
 		return new ETConfigurationResponseDTO(initialConfService.saveNewInitialConfiguration(conf), "Ok",
 				ETResponseStatus.SUCCESS);
 		}catch(Exception e){
+			e.printStackTrace();
+			return new ETConfigurationResponseDTO(null, "FAIL :: "+e.getMessage(),
+					ETResponseStatus.ERROR);
+		}
+	}
+	
+	
+	@RequestMapping(value = "/initialconf/getCurrentModules", headers = "content-type=application/x-www-form-urlencoded", method = RequestMethod.POST,consumes="application/json", produces = "application/json")
+	public @ResponseBody Object getCurrentModules() {
+
+		
+		try{
+		return new ETConfigurationResponseDTO(initialConfService.getCurrentModules(), "Ok",
+				ETResponseStatus.SUCCESS);
+		}catch(Exception e){
+			e.printStackTrace();
 			return new ETConfigurationResponseDTO(null, "FAIL :: "+e.getMessage(),
 					ETResponseStatus.ERROR);
 		}

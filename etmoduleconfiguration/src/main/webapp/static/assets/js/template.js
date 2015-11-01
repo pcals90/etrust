@@ -12,6 +12,7 @@
 	
 		$(".banner-image").backstretch('assets/images/banner.jpg');
 		$(".banner-image-settings").backstretch('../../assets/images/banner-settings.jpg');
+		$(".banner-image-addmodules").backstretch('../../assets/images/banner-addmodules.jpg');
 //		$(".banner-image").backstretch('assets/images/banner.jpg');
 //		$(".banner-image").backstretch('assets/images/banner.jpg');
 		

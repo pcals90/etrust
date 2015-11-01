@@ -110,7 +110,7 @@
 										id="navbar-collapse-1">
 										<ul class="nav navbar-nav navbar-right">
 											<li><a href="../../">Inicio</a></li>
-											<li><a href="#">Adicionar módulos</a></li>
+											<li><a href="../addition/moduleinventory.html">Adicionar módulos</a></li>
 											<li><a href="#">Configurar módulos</a></li>
 										</ul>
 									</div>
@@ -389,8 +389,10 @@
 				</div>
 				<div class="container">
 					<div class="row">
+					<div class="col-sm-6">
 						<p style="padding-top: 17px; padding-left: 23px;"
 							id="testConnectionResult"></p>
+					</div>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -431,8 +433,8 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
+	</div>
 		
 		<!-- Modal -->
 	<div id="modalSaveConnectionResultAdd" class="modal fade" role="dialog">
@@ -530,12 +532,13 @@
 						else
 							$("#testConnectionResult").html("No pudimos establecer comunicación con"+ 
 									" tu base de datos. Por favor verifica los parámetros de conexión");
+						
+						$("#modalTestConnectionResult").modal("show");
 					}).fail(function(error) {
 							$("#testConnectionResult").html("Ocurrio un error llamando nuestros servicios."+
 									" Por favor intenta nuevamente.");
+							$("#modalTestConnectionResult").modal("show");
 						});
-				
-				$("#modalTestConnectionResult").modal("show");
 
 			});
 
@@ -556,6 +559,11 @@
 							$("#modalSaveConnectionResult").modal("show");
 							
 					   },
+					   fail: function(error) {
+							$("#testConnectionResult").html("Ocurrio un error llamando nuestros servicios."+
+									" Por favor intenta nuevamente.");
+							$("#modalTestConnectionResult").modal("show");
+						},
 					   dataType: "json",
 					  headers: { 
 					        'Accept': 'application/json',
