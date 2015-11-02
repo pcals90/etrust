@@ -5,6 +5,14 @@ public class ETCurrentModules {
 	private String moduleName;
 	private String moduleDescription;
 	private String moduleStatus;
+	private Integer moduleId;
+		
+	public Integer getModuleId() {
+		return moduleId;
+	}
+	public void setModuleId(Integer moduleId) {
+		this.moduleId = moduleId;
+	}
 	public String getModuleName() {
 		return moduleName;
 	}
@@ -26,7 +34,7 @@ public class ETCurrentModules {
 	@Override
 	public String toString() {
 		return "ETCurrentModules [moduleName=" + moduleName + ", moduleDescription=" + moduleDescription
-				+ ", moduleStatus=" + moduleStatus + "]";
+				+ ", moduleStatus=" + moduleStatus + ", moduleId=" + moduleId + "]";
 	}
 	
 	

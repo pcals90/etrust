@@ -171,6 +171,11 @@ blockquote {
 	min-height: 50%;
 	width: 100%;
 }
+.banner-image-settings-module{
+	vertical-align: middle;
+	min-height: 50%;
+	width: 100%;
+}
 
 .banner-image-addmodules {
 	vertical-align: middle;
@@ -350,13 +355,13 @@ blockquote {
 	transition: all 0.2s ease-in-out;
 }
 .btn-default {
-	color: #55acee;
-	border: 1px solid #cccccc;
+	color: #55acee !important;
+	border: 1px solid #cccccc !important;
 }
 .btn-default:hover {
-	color: #ffffff;
-	background-color: #339BEB;
-	border-color: #339BEB;
+	color: #ffffff !important;
+	background-color: #339BEB !important;
+	border-color: #339BEB !important;
 }
 
 /* Collapse
@@ -762,4 +767,8 @@ textarea {
     padding: 20px; 
 /*     width: 200px; */
     height: 450px;
+}
+
+.dbInformation{
+	min-height: 200px
 }

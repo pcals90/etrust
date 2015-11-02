@@ -13,6 +13,7 @@
 		$(".banner-image").backstretch('assets/images/banner.jpg');
 		$(".banner-image-settings").backstretch('../../assets/images/banner-settings.jpg');
 		$(".banner-image-addmodules").backstretch('../../assets/images/banner-addmodules.jpg');
+		$(".banner-image-settings-module").backstretch('../../assets/images/banner-settings-module.jpg');
 //		$(".banner-image").backstretch('assets/images/banner.jpg');
 //		$(".banner-image").backstretch('assets/images/banner.jpg');
 		

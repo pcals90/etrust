@@ -111,7 +111,7 @@
 										<ul class="nav navbar-nav navbar-right">
 											<li><a href="../../">Inicio</a></li>
 											<li><a href="../integration/settings.html">Configuración inicial</a></li>
-											<li><a href="#">Configurar módulos</a></li>
+											<li><a href="../configuration/moduleconfiguration.html">Configurar módulos</a></li>
 										</ul>
 									</div>
 
@@ -145,7 +145,8 @@
 						</h1>
 						<p class="lead text-center">En esta página puedes adicionar los módulos que quieras 
 						integrar a tu solución ecommerce. Recuerda que debes haber llenado la información de conexión a la 
-						base de datos en la página de <a href="../integration/settings.html">Configuración inicial.</a></p>
+						base de datos en la página de <a href="../integration/settings.html">Configuración inicial.</a> 
+						Luego de adicionar los módulos que deseas, ve a <a href="../configuration/moduleconfiguration.html">Configuración de módulos.</a> para personalizarlos.</p>
 					</div>
 
 				</div>
@@ -163,10 +164,28 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
+					
+					<div class="row">
 					<h1 id="conexion" class="title text-left">
 						Módulos<span> disponibles</span>
 					</h1>
 					<p class="lead text-left">Por favor selecciona los módulos que deseas integrar a tu solución.</p>
+					</div>
+					<div class = "row">
+						<ul>
+							<li>
+								<a href="#preventaTitle">Módulo de Preventa</a>
+							</li>
+							<li>
+								<a href="#postventaTitle">Módulo de Postventa</a>
+							</li>
+						</ul>
+					</div>
+					<hr>
+					<div id="preventaTitle" class = "row">
+						<h2>Módulo de <span>Preventa</span></h2>
+					</div>
+					<hr>
 					<div class="row">
 
 						<div class="col-xs-4 moduleGrid">
@@ -188,6 +207,55 @@
 							
 						</div>
 						
+						
+						<div class="col-xs-4 moduleGrid">
+							
+							<div class = "row">
+								<h3 style="color:#339BEB">Canales de comunicación</h3>
+							</div>
+							<div class = "row">
+							  <img alt="Calificación de productos" style="height:252px" src="../../assets/images/comunicacionclientes.jpg">
+							</div>
+							
+							<div class = "row">
+								<p>Amplia los canales de comunicación con tus clientes, dándoles más opciones para contactarte<p>
+							</div>
+							
+							<div class = "row">
+								<button id="adicionarComunicacion" type="button" class="btn btn-warning disabled">Próximamente</button>
+							</div>
+							
+						</div>
+						
+						<div class="col-xs-4 moduleGrid">
+							
+							<div class = "row">
+								<h3 style="color:#339BEB">Información de productos</h3>
+							</div>
+							<div class = "row">
+							  <img alt="Calificación de productos" src="../../assets/images/productinformation.gif">
+							</div>
+							
+							<div class = "row">
+								<p>Muestra la información necesaria de tus productos para que tus clientes estén seguros de su compra.<p>
+							</div>
+							
+							<div class = "row">
+								<button id="adicionarInfoProductos" type="button" class="btn btn-warning disabled">Próximamente</button>
+							</div>
+							
+						</div>
+						
+						
+
+					</div>
+					<hr>
+					<div id="postventaTitle" class = "row">
+						<h2>Módulo de <span>Postventa</span></h2>
+					</div>
+					<hr>
+					<div class="row">
+
 						<div class="col-xs-4 moduleGrid">
 							
 							<div class = "row">
@@ -206,30 +274,8 @@
 							</div>
 							
 						</div>
-						
-						<div class="col-xs-4 moduleGrid">
-							
-							<div class = "row">
-								<h3 style="color:#339BEB">Canales de comunicación</h3>
-							</div>
-							<div class = "row">
-							  <img alt="Calificación de productos" style="height:252px" src="../../assets/images/comunicacionclientes.jpg">
-							</div>
-							
-							<div class = "row">
-								<p>Amplia los canales de comunicación con tus clientes, dándles más opciones para contactarte<p>
-							</div>
-							
-							<div class = "row">
-								<button id="adicionarComunicacion" type="button" class="btn btn-warning disabled">Próximamente</button>
-							</div>
-							
 						</div>
 						
-						
-
-					</div>
-					
 				</div>
 			</div>
 		</div>
@@ -238,26 +284,26 @@
 
 
 		<!-- Modal -->
-	<div id="modalSaveConnectionResultAdd" class="modal fade" role="dialog">
+	<div id="modalResult" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Guardar conexión</h4>
+					<h4 class="modal-title">Activación de módulo</h4>
 				</div>
 				<div class="container">
 					<div class="row">
 						<p style="padding-top: 17px; padding-left: 23px;"
-							id="saveConnectionResultAdd"></p>
+							id="resultOperation"></p>
 					</div>
 				</div>
 				<div class="modal-footer">
 					<div class="row">
 						<div class="col-md-1">
 							<button id = "closeSaveStatusAdd" type="button" class="btn btn-default"
-								data-dismiss="modal">Ir a configurar mis módulos</button>
+								data-dismiss="modal">Cerrar</button>
 						</div>
 					</div>
 				</div>
@@ -298,48 +344,60 @@
 		$(document).ready(
 			function() {
 				
-			$.get("/etmoduleconfiguration/initialconf/getCurrentModules").done(function(data){
-				
-				if(!data.response) return;
-				
-				$("#host").val(data.response.host);
-				$("#port").val(data.response.port);
-				$("#dbName").val(data.response.dbName);
-				$("#user").val(data.response.user);
-				$("#password").val(data.response.password);
-				
-				var provider = data.response.dbProvider;
-				$("select dbProvider").filter(function() {
-				    //may want to use $.trim in here
-				    return $(this).text() == provider; 
-				}).prop('selected', true);
-				
-				
-			});
-				
-			$("#testDbConnection").click(
-			function(event) {
-				
-				var form = $("#formDBConnection");
-				
-				if(!validateDBConnectionForm(this)) {
-					return;
-				};
-				
-				$.post("/etmoduleconfiguration/initialconf/testConnection",form.serialize()).
-					done(function(data) {
-						if (data.response)
-							$("#testConnectionResult").html("Conexión exitosa");
-						else
-							$("#testConnectionResult").html("No pudimos establecer comunicación con"+ 
-									" tu base de datos. Por favor verifica los parámetros de conexión");
+			var yaLoTiene = false;
+			var moduleId;
+			$.ajax({type: "GET",
+				  url: "/etmoduleconfiguration/initialconf/getCurrentModules",
+				  dataType: "json",
+				  data:{},
+				  success:function(data){
+			
+						if(!data.response) return;
 						
-						$("#modalTestConnectionResult").modal("show");
+						if (data.response[0].moduleStatus == "active"){
+							yaLoTiene = true;
+							cambiarEstadoBoton();
+						}
+						else{
+							yaLoTiene = false;
+							cambiarEstadoBoton();
+						}
+						moduleId = data.response[0].moduleId;
+				  }
+			});	
+			
+			function cambiarEstadoBoton(){
+				if(yaLoTiene){
+					$("#adicionarCalificacion").removeClass("btn-default");
+					$("#adicionarCalificacion").addClass("btn-success");
+					$("#adicionarCalificacion").text("Ya lo tienes!");
+				}else{
+					$("#adicionarCalificacion").removeClass("btn-success");
+					$("#adicionarCalificacion").addClass("btn-default");
+					$("#adicionarCalificacion").text("Adicionar");
+				}
+			}
+				
+			$("#adicionarCalificacion").click(
+			function(event) {
+				var url = "/etmoduleconfiguration/initialconf/"
+				if (!yaLoTiene){
+					url += "activateModule";
+				}else{
+					url += "deactivateModule";
+				}
+				
+				$.post(url,{"moduleId":moduleId}).
+					done(function(data) {
+						yaLoTiene = !yaLoTiene;
+						cambiarEstadoBoton();
+						$("#resultOperation").html("Has modificado el módulo correctamente.");
+						$("#modalResult").modal("show");
 					}).fail(function(error) {
-							$("#testConnectionResult").html("Ocurrio un error llamando nuestros servicios."+
+							$("#resultOperation").html("Ocurrio un error llamando nuestros servicios."+
 									" Por favor intenta nuevamente.");
-							$("#modalTestConnectionResult").modal("show");
-						});
+							$("#modalResult").modal("show");
+					});
 
 			});
 

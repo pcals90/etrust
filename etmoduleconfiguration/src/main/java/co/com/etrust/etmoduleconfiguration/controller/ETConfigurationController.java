@@ -76,12 +76,54 @@ public class ETConfigurationController {
 	}
 	
 	
-	@RequestMapping(value = "/initialconf/getCurrentModules", headers = "content-type=application/x-www-form-urlencoded", method = RequestMethod.POST,consumes="application/json", produces = "application/json")
+	@RequestMapping(value = "/initialconf/getCurrentModules", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody Object getCurrentModules() {
 
 		
 		try{
 		return new ETConfigurationResponseDTO(initialConfService.getCurrentModules(), "Ok",
+				ETResponseStatus.SUCCESS);
+		}catch(Exception e){
+			e.printStackTrace();
+			return new ETConfigurationResponseDTO(null, "FAIL :: "+e.getMessage(),
+					ETResponseStatus.ERROR);
+		}
+	}
+	
+	@RequestMapping(value = "/initialconf/activateModule", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody Object activateModule(@RequestParam final Integer moduleId) {
+
+		
+		try{
+		return new ETConfigurationResponseDTO(initialConfService.activateModule(moduleId), "Ok",
+				ETResponseStatus.SUCCESS);
+		}catch(Exception e){
+			e.printStackTrace();
+			return new ETConfigurationResponseDTO(null, "FAIL :: "+e.getMessage(),
+					ETResponseStatus.ERROR);
+		}
+	}
+	
+	@RequestMapping(value = "/initialconf/deactivateModule", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody Object deactivateModule(@RequestParam final Integer moduleId) {
+
+		
+		try{
+		return new ETConfigurationResponseDTO(initialConfService.deactivateModule(moduleId), "Ok",
+				ETResponseStatus.SUCCESS);
+		}catch(Exception e){
+			e.printStackTrace();
+			return new ETConfigurationResponseDTO(null, "FAIL :: "+e.getMessage(),
+					ETResponseStatus.ERROR);
+		}
+	}
+	
+	@RequestMapping(value = "/initialconf/getActiveModules", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody Object getActiveModules() {
+
+		
+		try{
+		return new ETConfigurationResponseDTO(initialConfService.getActiveModules(), "Ok",
 				ETResponseStatus.SUCCESS);
 		}catch(Exception e){
 			e.printStackTrace();
