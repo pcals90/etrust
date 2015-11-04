@@ -1,6 +1,5 @@
 package co.com.etrust.etmoduleadministration.dao.moduleavailability;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import co.com.etrust.etmoduleadministration.dao.connection.ETDBConnectionManager;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETCurrentModules;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETFunctionalities;
 
 @Repository("moduleAvailabilityDAO")
 public class ModuleAvailabilityDAO implements IModuleAvailabilityDAO {
@@ -66,6 +66,20 @@ public class ModuleAvailabilityDAO implements IModuleAvailabilityDAO {
 						"SELECT module_id as moduleId, module_Name as moduleName, module_status as moduleStatus, "
 								+ " module_description as moduleDescription " + " FROM et_modules" + " WHERE module_status = 'active'")
 				.setResultTransformer(Transformers.aliasToBean(ETCurrentModules.class));
+
+		return query.list();
+	}
+
+	@Override
+	public List<ETFunctionalities> getFunctionalitiesByModuleId(Integer moduleId) {
+		Session sess = ETDBConnectionManager.getCurrentSession();
+		sess.getTransaction();
+
+		Query query = sess
+				.createSQLQuery(
+						"SELECT functionality_id as id, name as name, module_id as moduleId, status as status  "
+								+ " FROM et_functionalities " + " WHERE module_id = :moduleId").setInteger("moduleId", moduleId)
+				.setResultTransformer(Transformers.aliasToBean(ETFunctionalities.class));
 
 		return query.list();
 	}

@@ -11,6 +11,7 @@ import co.com.etrust.etmoduleadministration.dao.connection.ETDBConnectionManager
 import co.com.etrust.etmoduleadministration.dao.moduleavailability.IModuleAvailabilityDAO;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETCurrentModules;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETExistingInitialConfDTO;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETFunctionalities;
 
 @Service("moduleAvailabilityService")
 class ModuleAvailabilityService {
@@ -66,6 +67,19 @@ class ModuleAvailabilityService {
 			ETDBConnectionManager.manageTransactionException(re, tx);
 		}
 		return new ArrayList<ETCurrentModules>();
+	}
+
+	public List<ETFunctionalities> getFunctionalitiesByModuleId(ETExistingInitialConfDTO etExistingInitialConfDTO,
+			Integer moduleId) {
+		Transaction tx = ETDBConnectionManager.initTransaction(etExistingInitialConfDTO);
+		try{
+			List<ETFunctionalities> ret =  availabilityDao.getFunctionalitiesByModuleId(moduleId);
+			ETDBConnectionManager.closeAndCommitTransaction(tx);
+			return ret;
+		}catch(RuntimeException re){
+			ETDBConnectionManager.manageTransactionException(re, tx);
+		}
+		return new ArrayList<ETFunctionalities>();
 	}
 	
 

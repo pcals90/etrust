@@ -7,6 +7,9 @@ import org.apache.commons.configuration.ConfigurationException;
 
 import co.com.etrust.etmoduleconfiguration.response.dto.ETCurrentModules;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETExistingInitialConfDTO;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETFunctionalities;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETMetaDataColumn;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETMetaDataTable;
 
 public interface IModuleService {
 
@@ -23,5 +26,11 @@ public interface IModuleService {
 	public boolean saveNewInitialConfiguration(ETExistingInitialConfDTO conf)  throws ConfigurationException, IOException;
 
 	public List<ETCurrentModules> getActiveModules() throws ConfigurationException, IOException;
+
+	public List<ETMetaDataTable> getAllTables()throws ConfigurationException, IOException;
+
+	public List<ETMetaDataColumn> getColumnInformationByTableName(String tableName) throws ConfigurationException, IOException;
+
+	public List<ETFunctionalities> getFunctionalitiesByModuleId(Integer moduleId) throws ConfigurationException, IOException;
 	
 }

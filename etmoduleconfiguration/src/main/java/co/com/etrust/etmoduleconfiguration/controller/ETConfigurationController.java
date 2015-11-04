@@ -131,5 +131,49 @@ public class ETConfigurationController {
 					ETResponseStatus.ERROR);
 		}
 	}
+	
+	@RequestMapping(value = "/initialconf/getAllTables", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody Object getAllTables() {
+
+		
+		try{
+		return new ETConfigurationResponseDTO(initialConfService.getAllTables(), "Ok",
+				ETResponseStatus.SUCCESS);
+		}catch(Exception e){
+			e.printStackTrace();
+			return new ETConfigurationResponseDTO(null, "FAIL :: "+e.getMessage(),
+					ETResponseStatus.ERROR);
+		}
+	}
+	
+	
+	@RequestMapping(value = "/initialconf/getColumnInformationByTableName", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody Object getColumnInformationByTableName(@RequestParam final String tableName) {
+
+		
+		try{
+		return new ETConfigurationResponseDTO(initialConfService.getColumnInformationByTableName(tableName), "Ok",
+				ETResponseStatus.SUCCESS);
+		}catch(Exception e){
+			e.printStackTrace();
+			return new ETConfigurationResponseDTO(null, "FAIL :: "+e.getMessage(),
+					ETResponseStatus.ERROR);
+		}
+	}
+	
+	@RequestMapping(value = "/initialconf/getFunctionalitiesByModuleId", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody Object getFunctionalitiesByModuleId(@RequestParam final Integer moduleId) {
+
+		
+		try{
+		return new ETConfigurationResponseDTO(initialConfService.getFunctionalitiesByModuleId(moduleId), "Ok",
+				ETResponseStatus.SUCCESS);
+		}catch(Exception e){
+			e.printStackTrace();
+			return new ETConfigurationResponseDTO(null, "FAIL :: "+e.getMessage(),
+					ETResponseStatus.ERROR);
+		}
+	}
+	
 
 }

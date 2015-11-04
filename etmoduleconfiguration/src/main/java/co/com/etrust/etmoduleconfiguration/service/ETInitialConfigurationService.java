@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import co.com.etrust.etmoduleadministration.service.IModuleService;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETCurrentModules;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETExistingInitialConfDTO;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETFunctionalities;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETMetaDataColumn;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETMetaDataTable;
 
 @Service("initialConfService")
 public class ETInitialConfigurationService {
@@ -53,6 +56,18 @@ public class ETInitialConfigurationService {
 
 	public List<ETCurrentModules> getActiveModules() throws ConfigurationException, IOException {
 		return moduleService.getActiveModules();
+	}
+
+	public List<ETMetaDataTable> getAllTables() throws ConfigurationException, IOException {
+		return moduleService.getAllTables();
+	}
+	
+	public List<ETMetaDataColumn> getColumnInformationByTableName(String tableName) throws ConfigurationException, IOException {
+		return moduleService.getColumnInformationByTableName(tableName);
+	}
+
+	public List<ETFunctionalities> getFunctionalitiesByModuleId(Integer moduleId) throws ConfigurationException, IOException {
+		return moduleService.getFunctionalitiesByModuleId(moduleId);
 	}
 
 }

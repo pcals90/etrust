@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import co.com.etrust.etmoduleconfiguration.response.dto.ETCurrentModules;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETExistingInitialConfDTO;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETFunctionalities;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETMetaDataColumn;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETMetaDataTable;
 
 @Service("moduleService")
 public class ModuleService implements IModuleService{
@@ -58,4 +61,20 @@ public class ModuleService implements IModuleService{
 		return availabilityService.getActiveModules(readExistingConfFromFile());
 	}
 
+	@Override
+	public List<ETMetaDataTable> getAllTables() throws ConfigurationException, IOException {
+		return metadataService.getAllTables(readExistingConfFromFile());
+	}
+
+	@Override
+	public List<ETMetaDataColumn> getColumnInformationByTableName(String tableName)throws ConfigurationException, IOException {
+		return metadataService.getColumnInformationByTableName(readExistingConfFromFile(),tableName);
+	}
+
+	@Override
+	public List<ETFunctionalities> getFunctionalitiesByModuleId(Integer moduleId)
+			throws ConfigurationException, IOException {
+		return availabilityService.getFunctionalitiesByModuleId(readExistingConfFromFile(),moduleId);
+	}
+	
 }

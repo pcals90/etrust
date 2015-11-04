@@ -231,7 +231,7 @@ h1 .subtitle{
     color: #FFFFFF;
 }
 .btn-default.btn-fill{
-    background-color: #999999;
+    background-color: #FFFFFF !important;
     border-color: #999999
 }
 .btn-primary.btn-fill{
@@ -255,8 +255,8 @@ h1 .subtitle{
     border-color: #FF3B30;
 }
 .btn-default.btn-fill:hover, .btn-default.btn-fill:focus, .btn-default.btn-fill:active, .btn-default.btn-fill.active, .open .dropdown-toggle.btn-fill.btn-default {
-    background-color: #888888;
-    border-color: #888888;
+    background-color: #888888 !important;
+    border-color: #888888 !important;
 }
 .btn-primary.btn-fill:hover, .btn-primary.btn-fill:focus, .btn-primary.btn-fill:active, .btn-primary.btn-fill.active, .open .dropdown-toggle.btn-primary.btn-fill{
     border-color: #1D62F0;

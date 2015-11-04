@@ -218,8 +218,8 @@
 													<div class="row">
 														<div class="col-sm-5 col-sm-offset-1">
 															<div class="form-group">
-																<label for="addedModules">Nombre de la tabla</label><select
-																	class="form-control" name="dbTables" id="dbTables">
+																<label for="dbProductTables">Nombre de la tabla</label><select
+																	class="form-control" name="dbProductTables" id="dbProductTables">
 																</select>
 															</div>
 														</div>
@@ -227,9 +227,9 @@
 													<div class="row">
 														<div class="col-sm-10 col-sm-offset-1">
 															<div class="form-group">
-																<label for="addedModules">Llave primaria</label><select
-																	class="form-control dbInformation" name="dbTables"
-																	id="dbTables" multiple>
+																<label for="dbProductColumns">Llave primaria</label><select
+																	class="form-control dbInformation" name="dbProductColumns"
+																	id="dbProductColumns" multiple>
 																</select> (Presiona Ctrl para seleccionar varios campos)
 															</div>
 														</div>
@@ -246,8 +246,8 @@
 													<div class="row">
 														<div class="col-sm-5 col-sm-offset-1">
 															<div class="form-group">
-																<label for="dbTables">Nombre de la tabla</label><select
-																	class="form-control" name="dbTables" id="dbTables">
+																<label for="dbSaleTables">Nombre de la tabla</label><select
+																	class="form-control" name="dbSaleTables" id="dbSaleTables">
 																</select>
 															</div>
 														</div>
@@ -255,9 +255,9 @@
 													<div class="row">
 														<div class="col-sm-10 col-sm-offset-1">
 															<div class="form-group">
-																<label for="addedModules">Llave primaria</label><select
-																	class="form-control dbInformation" name="dbTables"
-																	id="dbTables" multiple>
+																<label for="dbInformation">Llave primaria</label><select
+																	class="form-control dbInformation" name="dbSaleColumns"
+																	id="dbSaleColumns" multiple>
 																</select> (Presiona Ctrl para seleccionar varios campos)
 															</div>
 														</div>
@@ -270,13 +270,13 @@
 												<div class="row">
 													<div class="col-sm-12">
 														<h4 class="info-text">Información de tu tabla de
-															ventas</h4>
+															clientes</h4>
 													</div>
 													<div class="row">
 														<div class="col-sm-5 col-sm-offset-1">
 															<div class="form-group">
-																<label for="dbTables">Nombre de la tabla</label><select
-																	class="form-control" name="dbTables" id="dbTables">
+																<label for="dbClientTables">Nombre de la tabla</label><select
+																	class="form-control" name="dbClientTables" id="dbClientTables">
 																</select>
 															</div>
 														</div>
@@ -285,39 +285,8 @@
 														<div class="col-sm-10 col-sm-offset-1">
 															<div class="form-group">
 																<label for="addedModules">Llave primaria</label><select
-																	class="form-control dbInformation" name="dbTables"
-																	id="dbTables" multiple>
-																</select> (Presiona Ctrl para seleccionar varios campos)
-															</div>
-														</div>
-
-													</div>
-												</div>
-
-
-											</div>
-
-											<div class="tab-pane" id="salesInformation">
-												<div class="row">
-													<div class="col-sm-12">
-														<h4 class="info-text">Información de tu tabla de
-															ventas</h4>
-													</div>
-													<div class="row">
-														<div class="col-sm-5 col-sm-offset-1">
-															<div class="form-group">
-																<label for="dbTables">Nombre de la tabla</label><select
-																	class="form-control" name="dbTables" id="dbTables">
-																</select>
-															</div>
-														</div>
-													</div>
-													<div class="row">
-														<div class="col-sm-10 col-sm-offset-1">
-															<div class="form-group">
-																<label for="addedModules">Llave primaria</label><select
-																	class="form-control dbInformation" name="dbTables"
-																	id="dbTables" multiple>
+																	class="form-control dbInformation" name="dbClientColumns"
+																	id="dbClientColumns" multiple>
 																</select> (Presiona Ctrl para seleccionar varios campos)
 															</div>
 														</div>
@@ -325,7 +294,6 @@
 													</div>
 												</div>
 											</div>
-
 
 
 											<div class="tab-pane active" id="infoIntegration">
@@ -335,32 +303,32 @@
 															adicionar a tu sistema?</h4>
 													</div>
 													<div class="form-group">
-														<div class="col-sm-11">
+														<div class="col-sm-11" id="divFuncionalities">
 															<div class="row">
 																<div class="col-sm-3">
 																	<div class="checkbox">
-																		<label> <input type="checkbox" value="">Titulo de calificación
+																		<label> <input type="checkbox" value="1">Titulo de calificación
 																		</label>
 																	</div>
 																</div>
 																
 																<div class="col-sm-3">
 																	<div class="checkbox">
-																		<label> <input type="checkbox" value="">Comentario general
+																		<label> <input type="checkbox" value="2">Comentario general
 																		</label>
 																	</div>
 																</div>
 																
 																<div class="col-sm-3">
 																	<div class="checkbox">
-																		<label> <input type="checkbox" value="">Calificación del producto
+																		<label> <input type="checkbox" value="3">Calificación del producto
 																		</label>
 																	</div>
 																</div>
 																
 																<div class="col-sm-3">
 																	<div class="checkbox">
-																		<label> <input type="checkbox" value="">Calificación de servicio al cliente
+																		<label> <input type="checkbox" value="4">Calificación de servicio al cliente
 																		</label>
 																	</div>
 																</div>
@@ -369,28 +337,28 @@
 															<div class="row">
 																<div class="col-sm-3">
 																	<div class="checkbox">
-																		<label> <input type="checkbox" value="">Satisfacción general
+																		<label> <input type="checkbox" value="5">Satisfacción general
 																		</label>
 																	</div>
 																</div>
 																
 																<div class="col-sm-3">
 																	<div class="checkbox">
-																		<label> <input type="checkbox" value="">Pros del producto
+																		<label> <input type="checkbox" value="6">Pros del producto
 																		</label>
 																	</div>
 																</div>
 																
 																<div class="col-sm-3">
 																	<div class="checkbox">
-																		<label> <input type="checkbox" value="">Contras del producto
+																		<label> <input type="checkbox" value="7">Contras del producto
 																		</label>
 																	</div>
 																</div>
 																
 																<div class="col-sm-3">
 																	<div class="checkbox">
-																		<label> <input type="checkbox" value="">Mejores usos del producto
+																		<label> <input type="checkbox" value="8">Mejores usos del producto
 																		</label>
 																	</div>
 																</div>
@@ -399,28 +367,28 @@
 															<div class="row">
 																<div class="col-sm-3">
 																	<div class="checkbox">
-																		<label> <input type="checkbox" value="">Recomendaría a un amigo
+																		<label> <input type="checkbox" value="9">Recomendaría a un amigo
 																		</label>
 																	</div>
 																</div>
 																
 																<div class="col-sm-3">
 																	<div class="checkbox">
-																		<label> <input type="checkbox" value="">Compraría de nuevo el producto
+																		<label> <input type="checkbox" value="10">Compraría de nuevo el producto
 																		</label>
 																	</div>
 																</div>
 																
 																<div class="col-sm-3">
 																	<div class="checkbox">
-																		<label> <input type="checkbox" value="">Fecha de calificación
+																		<label> <input type="checkbox" value="11">Fecha de calificación
 																		</label>
 																	</div>
 																</div>
 																
 																<div class="col-sm-3">
 																	<div class="checkbox">
-																		<label> <input type="checkbox" value="">Utilidad del producto
+																		<label> <input type="checkbox" value="12">Utilidad del producto
 																		</label>
 																	</div>
 																</div>
@@ -476,7 +444,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Activación de módulo</h4>
+					<h4 class="modal-title">Configuración de módulo</h4>
 				</div>
 				<div class="container">
 					<div class="row">
@@ -558,13 +526,175 @@
 					});
 				}
 			});
+			
+			
+			
+			$("#dbProductTables").change(function (event){
+				
+				function addData(columns){
+					
+					$("#dbProductColumns").empty();
+					
+					$.each(columns,function(i,item){
+						var selected = false;
+						var text = item.columnName;
+						if(item.columnKey && item.columnKey != ""){
+							text += "("+item.columnKey+")";
+							
+							if(item.columnKey == "PRI"){
+								selected = true;
+							}
+						}
+						$("#dbProductColumns").append($('<option>', {
+							value : item.columnName,
+							text : text
+						}));
+						
+						if(selected)
+						$("#dbProductColumns option[value="+ item.columnName+"]").attr('selected','selected');
+						
+					});
+				}
+				
+				var tableName = $("#dbProductTables option:selected").text();
+				$.get("/etmoduleconfiguration/initialconf/getColumnInformationByTableName",{'tableName':tableName}).done(function(data){
+				
+					addData(data.response);
+			});
+				
+				
+			});
+			
+			$("#dbSaleTables").change(function (event){
+							
+				function addData(columns){
+					
+					$("#dbSaleColumns").empty();
+					
+					$.each(columns,function(i,item){
+						var selected = false;
+						var text = item.columnName;
+						if(item.columnKey && item.columnKey != ""){
+							text += "("+item.columnKey+")";
+							
+							if(item.columnKey == "PRI"){
+								selected = true;
+							}
+						}
+						$("#dbSaleColumns").append($('<option>', {
+							value : item.columnName,
+							text : text
+						}));
+						
+						if(selected)
+						$("#dbSaleColumns option[value="+ item.columnName+"]").attr('selected','selected');
+						
+					});
+				}
+				
+				var tableName = $("#dbSaleTables option:selected").text();
+				$.get("/etmoduleconfiguration/initialconf/getColumnInformationByTableName",{'tableName':tableName}).done(function(data){
+				
+					addData(data.response);
+			});
+							
+			});
+			
+			$("#dbClientTables").change(function (event){
+				
+					function addData(columns){
+					
+					$("#dbClientColumns").empty();
+					
+					$.each(columns,function(i,item){
+						var selected = false;
+						var text = item.columnName;
+						if(item.columnKey && item.columnKey != ""){
+							text += "("+item.columnKey+")";
+							
+							if(item.columnKey == "PRI"){
+								selected = true;
+							}
+						}
+						$("#dbClientColumns").append($('<option>', {
+							value : item.columnName,
+							text : text
+						}));
+						
+						if(selected)
+						$("#dbClientColumns option[value="+ item.columnName+"]").attr('selected','selected');
+						
+					});
+				}
+				
+				var tableName = $("#dbClientTables option:selected").text();
+				$.get("/etmoduleconfiguration/initialconf/getColumnInformationByTableName",{'tableName':tableName}).done(function(data){
+				
+					addData(data.response);
+			});
+				
+			});
 
 			$("#btnConfigureModule").click(function(event) {
+				
+				
+				$.get("/etmoduleconfiguration/initialconf/getAllTables").done(function(data){
+					
+					if(!data.response) return;
+					
+					$('#dbProductTables').empty();
+					$('#dbSaleTables').empty();
+					$('#dbClientTables').empty();
+					
+					$.each(data.response,function(i,item){
+						$('#dbProductTables').append($('<option>', {
+							value : item.tableName,
+							text : item.tableName
+						}));
+						
+						$('#dbSaleTables').append($('<option>', {
+							value : item.tableName,
+							text : item.tableName
+						}));
+						
+						$('#dbClientTables').append($('<option>', {
+							value : item.tableName,
+							text : item.tableName
+						}));
+					});
+					
+				}).fail(function(){
+					console.log(":(");
+				});
+					
+					
+				$.ajax({
+					  type: "GET",
+					  url: "/etmoduleconfiguration/initialconf/getFunctionalitiesByModuleId",
+					  data: {"moduleId":1},
+					  dataType: "json",
+					  success: function(data) {
+						  if (!data.response) return;
+						  $.each(data.response, function(i,item){
+							  
+							  var checkbox = $("#divFuncionalities :checkbox[value="+item.id+"]");
+							  
+							  if(item.status=='active')
+							  	checkbox.prop('checked', true);
+							  else
+							    checkbox.prop('checked',false);
+							  
+						  });
+							
+					   }
+				});
+				
 				$("#configurationModuleRow").show();
 
 			});
 
 		});
+			
 	</script>
 
 
