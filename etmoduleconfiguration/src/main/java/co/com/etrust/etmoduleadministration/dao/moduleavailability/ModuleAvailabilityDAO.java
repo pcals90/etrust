@@ -23,7 +23,8 @@ public class ModuleAvailabilityDAO implements IModuleAvailabilityDAO {
 		Query query = sess
 				.createSQLQuery(
 						"SELECT module_id as moduleId, module_Name as moduleName, module_status as moduleStatus, "
-								+ " module_description as moduleDescription " + " FROM et_modules" + " WHERE module_id = 1")
+								+ " module_description as moduleDescription " + " FROM et_modules"
+								+ " WHERE module_id = 1")
 				.setResultTransformer(Transformers.aliasToBean(ETCurrentModules.class));
 
 		return query.list();
@@ -34,11 +35,10 @@ public class ModuleAvailabilityDAO implements IModuleAvailabilityDAO {
 
 		Session sess = ETDBConnectionManager.getCurrentSession();
 
-		Query query = sess
-				.createSQLQuery("UPDATE et_modules set module_status = 'active' WHERE module_id = :moduleId")
+		Query query = sess.createSQLQuery("UPDATE et_modules set module_status = 'active' WHERE module_id = :moduleId")
 				.setParameter("moduleId", moduleId)
 				.setResultTransformer(Transformers.aliasToBean(ETCurrentModules.class));
-		
+
 		return query.executeUpdate() > 0;
 
 	}
@@ -48,11 +48,10 @@ public class ModuleAvailabilityDAO implements IModuleAvailabilityDAO {
 
 		Session sess = ETDBConnectionManager.getCurrentSession();
 
-		Query query = sess
-				.createSQLQuery("UPDATE et_modules set module_status = 'off' WHERE module_id = :moduleId")
+		Query query = sess.createSQLQuery("UPDATE et_modules set module_status = 'off' WHERE module_id = :moduleId")
 				.setParameter("moduleId", moduleId)
 				.setResultTransformer(Transformers.aliasToBean(ETCurrentModules.class));
-		
+
 		return query.executeUpdate() > 0;
 	}
 
@@ -64,7 +63,8 @@ public class ModuleAvailabilityDAO implements IModuleAvailabilityDAO {
 		Query query = sess
 				.createSQLQuery(
 						"SELECT module_id as moduleId, module_Name as moduleName, module_status as moduleStatus, "
-								+ " module_description as moduleDescription " + " FROM et_modules" + " WHERE module_status = 'active'")
+								+ " module_description as moduleDescription " + " FROM et_modules"
+								+ " WHERE module_status = 'active'")
 				.setResultTransformer(Transformers.aliasToBean(ETCurrentModules.class));
 
 		return query.list();
@@ -76,12 +76,30 @@ public class ModuleAvailabilityDAO implements IModuleAvailabilityDAO {
 		sess.getTransaction();
 
 		Query query = sess
-				.createSQLQuery(
-						"SELECT functionality_id as id, name as name, module_id as moduleId, status as status  "
-								+ " FROM et_functionalities " + " WHERE module_id = :moduleId").setInteger("moduleId", moduleId)
+				.createSQLQuery("SELECT functionality_id as id, name as name, module_id as moduleId, status as status  "
+						+ " FROM et_functionalities " + " WHERE module_id = :moduleId")
+				.setInteger("moduleId", moduleId)
 				.setResultTransformer(Transformers.aliasToBean(ETFunctionalities.class));
 
 		return query.list();
+	}
+
+	@Override
+	public boolean saveConfiguration(List<ETFunctionalities> functionalities) {
+		Session sess = ETDBConnectionManager.getCurrentSession();
+		sess.getTransaction();
+		
+		for (ETFunctionalities func : functionalities) {
+			Query query = sess
+					.createSQLQuery(
+							"UPDATE et_functionalities set status = :status WHERE functionality_id=:id and module_id = :moduleId");
+			query.setString("status", func.getStatus());
+			query.setInteger("id", func.getId());
+			query.setInteger("moduleId", func.getModuleId());
+			query.executeUpdate();
+		}
+		
+		return true;
 	}
 
 }

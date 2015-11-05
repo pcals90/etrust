@@ -81,6 +81,19 @@ class ModuleAvailabilityService {
 		}
 		return new ArrayList<ETFunctionalities>();
 	}
+
+	public Boolean saveConfiguration(ETExistingInitialConfDTO etExistingInitialConfDTO,
+			List<ETFunctionalities> functionalities) {
+		Transaction tx = ETDBConnectionManager.initTransaction(etExistingInitialConfDTO);
+		try{
+			boolean ret =  availabilityDao.saveConfiguration(functionalities);
+			ETDBConnectionManager.closeAndCommitTransaction(tx);
+			return ret;
+		}catch(RuntimeException re){
+			ETDBConnectionManager.manageTransactionException(re, tx);
+		}
+		return true;
+	}
 	
 
 }

@@ -135,7 +135,7 @@
 							<div class = "row text-center">
 								<a class="btn btn-success" href="modules/integration/settings.html"><i class="fa fa-play"></i>&nbsp;Empieza ahora</a>
 								<a style="margin-left: 40px;" class="btn btn-info" href="modules/addition/moduleinventory.html"><i class="fa fa-cart-plus"></i>&nbsp;Adiciona módulos</a> 
-								<a style="margin-left: 40px;" href="#" class="btn btn-info"><i class="fa fa-cog"></i>&nbsp;Configura tus módulos</a>
+								<a style="margin-left: 40px;" href="modules/configuration/moduleconfiguration.html" class="btn btn-info"><i class="fa fa-cog"></i>&nbsp;Configura tus módulos</a>
 							</div>
 							
 							<div class = "row text-center" style="display: none;margin-top: 30px;">
@@ -186,91 +186,108 @@
 
 		<!-- section start -->
 		<!-- ================ -->
-		<div class="section translucent-bg bg-image-1 blue">
+		<div class="section translucent-bg">
 			<div class="container object-non-visible" data-animation-effect="fadeIn">
 				<h1 id="modules"  class="text-center title">Módulos disponibles</h1>
 				<div class="space"></div>
-				<div class="row">
-					<div class="col-sm-6">
-						<div class="media">
-							<div class="media-body text-right">
-								<h4 class="media-heading">Service 1</h4>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure aperiam consequatur quo quis exercitationem reprehenderit dolor vel ducimus, voluptate eaque suscipit iste placeat.</p>
-							</div>
-							<div class="media-right">
-								<i class="fa fa-cog"></i>
-							</div>
-						</div>
-						<div class="media">
-							<div class="media-body text-right">
-								<h4 class="media-heading">Service 2</h4>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure aperiam consequatur quo quis exercitationem reprehenderit dolor vel ducimus, voluptate eaque suscipit iste placeat.</p>
-							</div>
-							<div class="media-right">
-								<i class="fa fa-check"></i>
-							</div>
-						</div>
-						<div class="media">
-							<div class="media-body text-right">
-								<h4 class="media-heading">Service 3</h4>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure aperiam consequatur quo quis exercitationem reprehenderit dolor vel ducimus, voluptate eaque suscipit iste placeat.</p>
-							</div>
-							<div class="media-right">
-								<i class="fa fa-desktop"></i>
-							</div>
-						</div>
-						<div class="media">
-							<div class="media-body text-right">
-								<h4 class="media-heading">Service 4</h4>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure aperiam consequatur quo quis exercitationem reprehenderit dolor vel ducimus, voluptate eaque suscipit iste placeat.</p>
-							</div>
-							<div class="media-right">
-								<i class="fa fa-users"></i>
-							</div>
-						</div>
+					
+					<hr>
+					<div id="preventaTitle" class = "row">
+						<h2>Módulo de Preventa</h2>
 					</div>
-					<div class="space visible-xs"></div>
-					<div class="col-sm-6">
-						<div class="media">
-							<div class="media-left">
-								<i class="fa fa-leaf"></i>
+					<hr>
+					<div class="row">
+
+						<div class="col-xs-4 moduleGrid">
+							
+							<div class = "row">
+								<h3 style="color:#339BEB">Calificación de productos</h3>
 							</div>
-							<div class="media-body">
-								<h4 class="media-heading">Service 5</h4>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure aperiam consequatur quo quis exercitationem reprehenderit dolor vel ducimus, voluptate eaque suscipit iste placeat.</p>
+							<div class = "row">
+							  <img alt="Calificación de productos" src="assets/images/calificacionproductos.jpg">
 							</div>
+							
+							<div class = "row">
+								<p>Da la posibilidad a tus clientes de calificar toda su experiencia de compra.<p>
+							</div>
+							
+							<div class = "row">
+								<button type="button" class="btn btn-success">Disponible!</button>
+							</div>
+							
 						</div>
-						<div class="media">
-							<div class="media-left">
-								<i class="fa fa-area-chart"></i>
+						
+						
+						<div class="col-xs-4 moduleGrid">
+							
+							<div class = "row">
+								<h3 style="color:#339BEB">Canales de comunicación</h3>
 							</div>
-							<div class="media-body">
-								<h4 class="media-heading">Service 6</h4>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure aperiam consequatur quo quis exercitationem reprehenderit dolor vel ducimus, voluptate eaque suscipit iste placeat.</p>
+							<div class = "row">
+							  <img alt="Calificación de productos" style="height:252px" src="assets/images/comunicacionclientes.jpg">
 							</div>
+							
+							<div class = "row">
+								<p>Amplia los canales de comunicación con tus clientes, dándoles más opciones para contactarte<p>
+							</div>
+							
+							<div class = "row">
+								<button id="adicionarComunicacion" type="button" class="btn btn-warning">Próximamente</button>
+							</div>
+							
 						</div>
-						<div class="media">
-							<div class="media-left">
-								<i class="fa fa-child"></i>
+						
+						<div class="col-xs-4 moduleGrid">
+							
+							<div class = "row">
+								<h3 style="color:#339BEB">Información de productos</h3>
 							</div>
-							<div class="media-body">
-								<h4 class="media-heading">Service 7</h4>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure aperiam consequatur quo quis exercitationem reprehenderit dolor vel ducimus, voluptate eaque suscipit iste placeat.</p>
+							<div class = "row">
+							  <img alt="Calificación de productos"  style="height:252px" src="assets/images/productinformation.gif">
 							</div>
+							
+							<div class = "row">
+								<p>Muestra la información necesaria de tus productos para que tus clientes estén seguros de su compra.<p>
+							</div>
+							
+							<div class = "row">
+								<button id="adicionarInfoProductos" type="button" class="btn btn-warning">Próximamente</button>
+							</div>
+							
 						</div>
-						<div class="media">
-							<div class="media-left">
-								<i class="fa fa-codepen"></i>
-							</div>
-							<div class="media-body">
-								<h4 class="media-heading">Service 8</h4>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure aperiam consequatur quo quis exercitationem reprehenderit dolor vel ducimus, voluptate eaque suscipit iste placeat.</p>
-							</div>
-						</div>
+						
+						
+
 					</div>
+					<hr>
+					<div id="postventaTitle" class = "row">
+						<h2>Módulo de Postventa</h2>
+					</div>
+					<hr>
+					<div class="row">
+
+						<div class="col-xs-4 moduleGrid">
+							
+							<div class = "row">
+								<h3 style="color:#339BEB">Campañas publicitarias</h3>
+							</div>
+							<div class = "row">
+							  <img alt="Calificación de productos" src="assets/images/publicidadclientes.jpg">
+							</div>
+							
+							<div class = "row">
+								<p>Publica tus productos a través de redes sociales o redes de anuncios.<p>
+							</div>
+							
+							<div class = "row">
+								<button id="adicionarPublicitarias" type="button" class="btn btn-warning">Próximamente</button>
+							</div>
+							
+						</div>
+						</div>
+						
 				</div>
 			</div>
-		</div>
 		<!-- section end -->
 
 		<!-- section start -->

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
 
+import co.com.etrust.etapi.response.dto.ETApiModuleDTO;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETCurrentModules;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETExistingInitialConfDTO;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETFunctionalities;
@@ -32,5 +33,9 @@ public interface IModuleService {
 	public List<ETMetaDataColumn> getColumnInformationByTableName(String tableName) throws ConfigurationException, IOException;
 
 	public List<ETFunctionalities> getFunctionalitiesByModuleId(Integer moduleId) throws ConfigurationException, IOException;
+
+	public Boolean saveConfiguration(List<ETFunctionalities> functionalities)throws ConfigurationException, IOException;
+
+	public List<ETApiModuleDTO> getFunctionalities(String serviceName)throws ConfigurationException, IOException;
 	
 }

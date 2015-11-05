@@ -17,4 +17,6 @@ public interface IModuleAvailabilityDAO {
 	public List<ETCurrentModules> getActiveModules();
 
 	public List<ETFunctionalities> getFunctionalitiesByModuleId(Integer moduleId);
+
+	public boolean saveConfiguration(List<ETFunctionalities> functionalities);
 }

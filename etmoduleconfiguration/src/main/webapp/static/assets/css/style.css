@@ -761,14 +761,3 @@ textarea {
 	transform: scale(1);
 }
 
-.moduleGrid{
-    border-left: 0.2px solid;
-    border-right: 0.2px solid;
-    padding: 20px; 
-/*     width: 200px; */
-    height: 450px;
-}
-
-.dbInformation{
-	min-height: 200px
-}

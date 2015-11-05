@@ -70,4 +70,8 @@ public class ETInitialConfigurationService {
 		return moduleService.getFunctionalitiesByModuleId(moduleId);
 	}
 
+	public Boolean saveConfiguration(List<ETFunctionalities> functionalities) throws ConfigurationException, IOException {
+		return moduleService.saveConfiguration(functionalities);
+	}
+
 }

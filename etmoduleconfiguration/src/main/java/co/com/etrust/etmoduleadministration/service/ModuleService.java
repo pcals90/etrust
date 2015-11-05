@@ -7,6 +7,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.com.etrust.etapi.response.dto.ETApiModuleDTO;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETCurrentModules;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETExistingInitialConfDTO;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETFunctionalities;
@@ -75,6 +76,17 @@ public class ModuleService implements IModuleService{
 	public List<ETFunctionalities> getFunctionalitiesByModuleId(Integer moduleId)
 			throws ConfigurationException, IOException {
 		return availabilityService.getFunctionalitiesByModuleId(readExistingConfFromFile(),moduleId);
+	}
+
+	@Override
+	public Boolean saveConfiguration(List<ETFunctionalities> functionalities)
+			throws ConfigurationException, IOException {
+		return availabilityService.saveConfiguration(readExistingConfFromFile(),functionalities);
+	}
+
+	@Override
+	public List<ETApiModuleDTO> getFunctionalities(String serviceName) throws ConfigurationException, IOException {
+		return directoryService.getFunctionalities(readExistingConfFromFile(),serviceName);
 	}
 	
 }

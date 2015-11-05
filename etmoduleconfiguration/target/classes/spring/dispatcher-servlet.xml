@@ -15,7 +15,7 @@
 	<aop:aspectj-autoproxy />
 
 
-	<context:component-scan base-package="co.com.etrust.etmoduleconfiguration">
+	<context:component-scan base-package="co.com.etrust.etmoduleconfiguration, co.com.etrust.etapi">
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
