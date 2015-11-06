@@ -18,7 +18,6 @@ public class ModuleAvailabilityDAO implements IModuleAvailabilityDAO {
 	public List<ETCurrentModules> getCurrentModules() {
 
 		Session sess = ETDBConnectionManager.getCurrentSession();
-		sess.getTransaction();
 
 		Query query = sess
 				.createSQLQuery(
@@ -58,7 +57,6 @@ public class ModuleAvailabilityDAO implements IModuleAvailabilityDAO {
 	@Override
 	public List<ETCurrentModules> getActiveModules() {
 		Session sess = ETDBConnectionManager.getCurrentSession();
-		sess.getTransaction();
 
 		Query query = sess
 				.createSQLQuery(
@@ -73,7 +71,6 @@ public class ModuleAvailabilityDAO implements IModuleAvailabilityDAO {
 	@Override
 	public List<ETFunctionalities> getFunctionalitiesByModuleId(Integer moduleId) {
 		Session sess = ETDBConnectionManager.getCurrentSession();
-		sess.getTransaction();
 
 		Query query = sess
 				.createSQLQuery("SELECT functionality_id as id, name as name, module_id as moduleId, status as status  "
@@ -87,7 +84,6 @@ public class ModuleAvailabilityDAO implements IModuleAvailabilityDAO {
 	@Override
 	public boolean saveConfiguration(List<ETFunctionalities> functionalities) {
 		Session sess = ETDBConnectionManager.getCurrentSession();
-		sess.getTransaction();
 		
 		for (ETFunctionalities func : functionalities) {
 			Query query = sess

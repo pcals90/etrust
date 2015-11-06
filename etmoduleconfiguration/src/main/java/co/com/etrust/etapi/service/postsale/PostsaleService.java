@@ -1,4 +1,4 @@
-package co.com.etrust.etapi.service.etpostsale;
+package co.com.etrust.etapi.service.postsale;
 
 import org.springframework.stereotype.Service;
 

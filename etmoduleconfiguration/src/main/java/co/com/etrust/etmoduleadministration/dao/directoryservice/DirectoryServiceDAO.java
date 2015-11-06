@@ -18,7 +18,6 @@ public class DirectoryServiceDAO implements IDirectoryServiceDAO {
 	@Override
 	public List<ETApiModuleDTO> getFunctionalities(String serviceName) {
 		Session sess = ETDBConnectionManager.getCurrentSession();
-		sess.getTransaction();
 
 		List<ETApiModuleDTO> results = new ArrayList<ETApiModuleDTO>();
 		Query query = sess

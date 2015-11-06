@@ -18,7 +18,6 @@ public class ModuleConfigurationDAO implements IModuleConfigurationDAO {
 	public List<ETMetaDataTable> getAllTables(String dbname) {
 
 		Session sess = ETDBConnectionManager.getCurrentSession();
-		sess.getTransaction();
 
 		Query query = sess
 				.createSQLQuery(
@@ -32,7 +31,6 @@ public class ModuleConfigurationDAO implements IModuleConfigurationDAO {
 	public List<ETMetaDataColumn> getColumnInformationByTableName(String dbname, String tableName) {
 
 		Session sess = ETDBConnectionManager.getCurrentSession();
-		sess.getTransaction();
 
 		Query query = sess
 				.createSQLQuery(
