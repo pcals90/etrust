@@ -1,6 +1,5 @@
 package co.com.etrust.etapi.controller;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +14,6 @@ import co.com.etrust.etapi.response.dto.ETApiResponseDTO;
 import co.com.etrust.etapi.response.dto.ETApiResponseStatus;
 import co.com.etrust.etapi.service.postsale.IPostsaleService;
 import co.com.etrust.etapi.service.presale.IPresaleService;
-import javassist.bytecode.stackmap.TypeData.ClassName;
 
 @Controller
 public class ETApiController {
@@ -26,8 +24,6 @@ public class ETApiController {
 	@Autowired
 	private IPresaleService presaleService;
 
-	
-private static final Logger log = Logger.getLogger( ClassName.class.getName() );
 	
 	@RequestMapping(value = "/etapi/test", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody Object test() {

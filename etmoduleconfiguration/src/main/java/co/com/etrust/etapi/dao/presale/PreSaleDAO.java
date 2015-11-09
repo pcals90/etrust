@@ -14,7 +14,7 @@ import co.com.etrust.etapi.request.ETReviewFiltersDTO;
 import co.com.etrust.etapi.request.ETReviewRateDTO;
 import co.com.etrust.etmoduleadministration.dao.connection.ETDBConnectionManager;
 
-@Repository("directoryServiceDAO")
+@Repository("presaleServiceDAO")
 public class PreSaleDAO implements IPresaleDAO {
 
 
