@@ -8,138 +8,344 @@ public class ETReviewDTO {
 	private int productId;
 	private int customerId;
 	
-	private String titleReview;
-	private String reviewComment;
-	private int productReview;
-	private int esqReview;
-	private int satisfactionReview;
-	private String prosReview;
-	private String consReview;
-	private String bestUsageReview;
-	private int recommendFriend;
-	private int buyAgain;
-	private int productUtility;
+	private String etTituloCalificacion;
+	private String etComentarioGeneral;
+	private int etCalificacionProducto;
+	private int etCalificacionServicioCliente;
+	private int etSatisfaccionGeneral;
+	private String etProsProducto;
+	private String etContrasProducto;
+	private String etMejorasProducto;
+	private int etRecomendarAmigo;
+	private int etComprariaDeNuevo;
+	private int etUtilidadProducto;
 	private String reviewType;
+	private String reviewDate;
+	private int reviewCalification;
 	
+	public String getReviewDate() {
+		return reviewDate;
+	}
+
+
+
+
+
+	public int getReviewCalification() {
+		return reviewCalification;
+	}
+
+
+
+
+
+	public void setReviewCalification(int reviewCalification) {
+		this.reviewCalification = reviewCalification;
+	}
+
+
+
+
+
+	public void setReviewDate(String reviewDate) {
+		this.reviewDate = reviewDate;
+	}
+
+
+
+
+
 	private int reviewId;
 	
 	private List<ETMediaReviewDTO> mediaReview;
 	
-	public List<ETMediaReviewDTO> getMediaReview() {
-		return mediaReview;
-	}
-	public void setMediaReview(List<ETMediaReviewDTO> mediaReview) {
-		this.mediaReview = mediaReview;
-	}
+	
+	
+
+
 	public int getSaleId() {
 		return saleId;
 	}
-	
+
+
+
+
+
 	public void setSaleId(int saleId) {
 		this.saleId = saleId;
 	}
+
+
+
+
+
 	public int getProductId() {
 		return productId;
 	}
+
+
+
+
+
 	public void setProductId(int productId) {
 		this.productId = productId;
 	}
+
+
+
+
+
 	public int getCustomerId() {
 		return customerId;
 	}
+
+
+
+
+
 	public void setCustomerId(int customerId) {
 		this.customerId = customerId;
 	}
-	public String getTitleReview() {
-		return titleReview;
-	}
-	public void setTitleReview(String titleReview) {
-		this.titleReview = titleReview;
-	}
-	public String getReviewComment() {
-		return reviewComment;
-	}
-	public void setReviewComment(String reviewComment) {
-		this.reviewComment = reviewComment;
-	}
-	public int getEsqReview() {
-		return esqReview;
-	}
-	public void setEsqReview(int esqReview) {
-		this.esqReview = esqReview;
-	}
-	public int getSatisfactionReview() {
-		return satisfactionReview;
-	}
-	public void setSatisfactionReview(int satisfactionReview) {
-		this.satisfactionReview = satisfactionReview;
-	}
-	public String getProsReview() {
-		return prosReview;
-	}
-	public void setProsReview(String prosReview) {
-		this.prosReview = prosReview;
-	}
-	public String getConsReview() {
-		return consReview;
-	}
-	public void setConsReview(String consReview) {
-		this.consReview = consReview;
-	}
-	public String getBestUsageReview() {
-		return bestUsageReview;
-	}
-	public void setBestUsageReview(String bestUsageReview) {
-		this.bestUsageReview = bestUsageReview;
-	}
-	public int getRecommendFriend() {
-		return recommendFriend;
-	}
-	public void setRecommendFriend(int recommendFriend) {
-		this.recommendFriend = recommendFriend;
-	}
-	public int getBuyAgain() {
-		return buyAgain;
-	}
-	public void setBuyAgain(int buyAgain) {
-		this.buyAgain = buyAgain;
+
+
+
+
+
+	public String getEtTituloCalificacion() {
+		return etTituloCalificacion;
 	}
 
-	public int getProductUtility() {
-		return productUtility;
+
+
+
+
+	public void setEtTituloCalificacion(String etTituloCalificacion) {
+		this.etTituloCalificacion = etTituloCalificacion;
 	}
-	public void setProductUtility(int productUtility) {
-		this.productUtility = productUtility;
+
+
+
+
+
+	public String getEtComentarioGeneral() {
+		return etComentarioGeneral;
 	}
+
+
+
+
+
+	public void setEtComentarioGeneral(String etComentarioGeneral) {
+		this.etComentarioGeneral = etComentarioGeneral;
+	}
+
+
+
+
+
+	public int getEtCalificacionProducto() {
+		return etCalificacionProducto;
+	}
+
+
+
+
+
+	public void setEtCalificacionProducto(int etCalificacionProducto) {
+		this.etCalificacionProducto = etCalificacionProducto;
+	}
+
+
+
+
+
+	public int getEtCalificacionServicioCliente() {
+		return etCalificacionServicioCliente;
+	}
+
+
+
+
+
+	public void setEtCalificacionServicioCliente(int etCalificacionServicioCliente) {
+		this.etCalificacionServicioCliente = etCalificacionServicioCliente;
+	}
+
+
+
+
+
+	public int getEtSatisfaccionGeneral() {
+		return etSatisfaccionGeneral;
+	}
+
+
+
+
+
+	public void setEtSatisfaccionGeneral(int etSatisfaccionGeneral) {
+		this.etSatisfaccionGeneral = etSatisfaccionGeneral;
+	}
+
+
+
+
+
+	public String getEtProsProducto() {
+		return etProsProducto;
+	}
+
+
+
+
+
+	public void setEtProsProducto(String etProsProducto) {
+		this.etProsProducto = etProsProducto;
+	}
+
+
+
+
+
+	public String getEtContrasProducto() {
+		return etContrasProducto;
+	}
+
+
+
+
+
+	public void setEtContrasProducto(String etContrasProducto) {
+		this.etContrasProducto = etContrasProducto;
+	}
+
+
+
+
+
+	public String getEtMejorasProducto() {
+		return etMejorasProducto;
+	}
+
+
+
+
+
+	public void setEtMejorasProducto(String etMejorasProducto) {
+		this.etMejorasProducto = etMejorasProducto;
+	}
+
+
+
+
+
+	public int getEtRecomendarAmigo() {
+		return etRecomendarAmigo;
+	}
+
+
+
+
+
+	public void setEtRecomendarAmigo(int etRecomendarAmigo) {
+		this.etRecomendarAmigo = etRecomendarAmigo;
+	}
+
+
+
+
+
+	public int getEtComprariaDeNuevo() {
+		return etComprariaDeNuevo;
+	}
+
+
+
+
+
+	public void setEtComprariaDeNuevo(int etComprariaDeNuevo) {
+		this.etComprariaDeNuevo = etComprariaDeNuevo;
+	}
+
+
+
+
+
+	public int getEtUtilidadProducto() {
+		return etUtilidadProducto;
+	}
+
+
+
+
+
+	public void setEtUtilidadProducto(int etUtilidadProducto) {
+		this.etUtilidadProducto = etUtilidadProducto;
+	}
+
+
+
+
+
 	public String getReviewType() {
 		return reviewType;
 	}
+
+
+
+
+
 	public void setReviewType(String reviewType) {
 		this.reviewType = reviewType;
 	}
-	
-	public int getProductReview() {
-		return productReview;
-	}
-	public void setProductReview(int productReview) {
-		this.productReview = productReview;
-	}
-	
+
+
+
+
+
 	public int getReviewId() {
 		return reviewId;
 	}
+
+
+
+
+
 	public void setReviewId(int reviewId) {
 		this.reviewId = reviewId;
 	}
+
+
+
+
+
+	public List<ETMediaReviewDTO> getMediaReview() {
+		return mediaReview;
+	}
+
+
+
+
+
+	public void setMediaReview(List<ETMediaReviewDTO> mediaReview) {
+		this.mediaReview = mediaReview;
+	}
+
+
+
+
+
 	@Override
 	public String toString() {
 		return "ETReviewDTO [saleId=" + saleId + ", productId=" + productId + ", customerId=" + customerId
-				+ ", titleReview=" + titleReview + ", reviewComment=" + reviewComment + ", productReview="
-				+ productReview + ", esqReview=" + esqReview + ", satisfactionReview=" + satisfactionReview
-				+ ", prosReview=" + prosReview + ", consReview=" + consReview + ", bestUsageReview=" + bestUsageReview
-				+ ", recommendFriend=" + recommendFriend + ", buyAgain=" + buyAgain + ", productUtility="
-				+ productUtility + ", reviewType=" + reviewType + ", reviewId=" + reviewId + ", mediaReview="
-				+ mediaReview + "]";
+				+ ", etTituloCalificacion=" + etTituloCalificacion + ", etComentarioGeneral=" + etComentarioGeneral
+				+ ", etCalificacionProducto=" + etCalificacionProducto + ", etCalificacionServicioCliente="
+				+ etCalificacionServicioCliente + ", etSatisfaccionGeneral=" + etSatisfaccionGeneral
+				+ ", etProsProducto=" + etProsProducto + ", etContrasProducto=" + etContrasProducto
+				+ ", etMejorasProducto=" + etMejorasProducto + ", etRecomendarAmigo=" + etRecomendarAmigo
+				+ ", etComprariaDeNuevo=" + etComprariaDeNuevo + ", etUtilidadProducto=" + etUtilidadProducto
+				+ ", reviewType=" + reviewType + ", reviewDate=" + reviewDate + ", reviewId=" + reviewId
+				+ ", mediaReview=" + mediaReview + "]";
 	}
 	
 	

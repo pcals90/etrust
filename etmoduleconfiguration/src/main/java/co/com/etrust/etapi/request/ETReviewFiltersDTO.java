@@ -2,27 +2,40 @@ package co.com.etrust.etapi.request;
 
 public class ETReviewFiltersDTO {
 
-	private Integer productId;
-	private Integer saleId;
-	private Integer customerId;
-	public Integer getProductId() {
+	private int productId;
+	private int saleId;
+	private int customerId;
+	
+	public int getProductId() {
 		return productId;
 	}
-	public void setProductId(Integer productId) {
+
+
+	public void setProductId(int productId) {
 		this.productId = productId;
 	}
-	public Integer getSaleId() {
+
+
+	public int getSaleId() {
 		return saleId;
 	}
-	public void setSaleId(Integer saleId) {
+
+
+	public void setSaleId(int saleId) {
 		this.saleId = saleId;
 	}
-	public Integer getCustomerId() {
+
+
+	public int getCustomerId() {
 		return customerId;
 	}
-	public void setCustomerId(Integer customerId) {
+
+
+	public void setCustomerId(int customerId) {
 		this.customerId = customerId;
 	}
+
+
 	@Override
 	public String toString() {
 		return "ETReviewFiltersDTO [productId=" + productId + ", saleId=" + saleId + ", customerId=" + customerId + "]";
