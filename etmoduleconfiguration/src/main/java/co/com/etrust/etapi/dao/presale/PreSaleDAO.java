@@ -49,22 +49,23 @@ public class PreSaleDAO implements IPresaleDAO {
 						+ " :reviewType)");
 		
 		query.setInteger("productId",review.getProductId());
-		query.setString("reviewTitle",review.getTitleReview());
-		query.setString("reviewComment",review.getReviewComment());
-		query.setInteger("productReview",review.getProductReview());
-		query.setInteger("esqReview",review.getEsqReview());
-		query.setInteger("satisfactionReview",review.getSatisfactionReview());
-		query.setString("prosReview",review.getProsReview());
-		query.setString("consReview",review.getConsReview());
-		query.setString("bestUsage",review.getBestUsageReview());
-		query.setInteger("recommendFriend",review.getRecommendFriend());
-		query.setInteger("buyAgain",review.getBuyAgain());
+		query.setString("reviewTitle",review.getEtTituloCalificacion());
+		query.setString("reviewComment",review.getEtComentarioGeneral());
+		query.setInteger("productReview",review.getEtCalificacionProducto());
+		query.setInteger("esqReview",review.getEtCalificacionServicioCliente());
+		query.setInteger("satisfactionReview",review.getEtSatisfaccionGeneral());
+		query.setString("prosReview",review.getEtProsProducto());
+		query.setString("consReview",review.getEtContrasProducto());
+		query.setString("bestUsage",review.getEtMejorasProducto());
+		query.setInteger("recommendFriend",review.getEtRecomendarAmigo());
+		query.setInteger("buyAgain",review.getEtComprariaDeNuevo());
 		query.setDate("reviewDate",new Date());
-		query.setInteger("productUtility",review.getProductUtility());
+		query.setInteger("productUtility",review.getEtUtilidadProducto());
 		query.setString("reviewType",review.getReviewType());
 		
 		query.executeUpdate();
 		
+		if (review.getMediaReview() != null)
 		for(ETMediaReviewDTO media : review.getMediaReview()){
 		
 			Query mediaQuery = sess
@@ -95,8 +96,18 @@ public class PreSaleDAO implements IPresaleDAO {
 		Session sess = ETDBConnectionManager.getCurrentSession();
 		sess.getTransaction();
 
-		String queryString = "SELECT r.review_et_id r.reviewTitle, r.reviewComment, r.productReview, r.esqReview, r.satisfactionReview, r.prosReview, r.consReview,"
-				+ " r.bestUsage, r.recommendFriend, r.buyAgain, r.reviewDate, r.productUtility, r.reviewType, r.reviewCalification"
+		String queryString = "SELECT r.review_et_id as reviewId, "
+				+ " r.review_title as etTituloCalificacion, "
+				+ " r.review_comment as etComentarioGeneral, "
+				+ " r.product_review as etCalificacionProducto,"
+				+ " r.esq_review as etCalificacionServicioCliente,"
+				+ " r.satisfaction_review as etSatisfaccionGeneral, "
+				+ " r.pros_review as etProsProducto, "
+				+ " r.cons_review as etContrasProducto,"
+				+ " r.best_usage as etMejorasProducto, "
+				+ "	r.recommend_firend as etRecomendarAmigo, "
+				+ " r.buy_again as etComprariaDeNuevo, CAST(r.review_date as CHAR) as reviewDate, r.review_product_utility as etUtilidadProducto, "
+				+ "	r.review_type as reviewType, r.reviewCalification as reviewCalification"
 				+ " FROM et_reviews r"
 				+ " WHERE r.product_et_id = :productId";
 		
@@ -111,7 +122,7 @@ public class PreSaleDAO implements IPresaleDAO {
 			
 			Query mediaQuery = sess
 					.createSQLQuery(
-							"SELECT mr "
+							"SELECT mr.media_type as mediaType, mr.media_file as file "
 							+ " FROM et_media_review mr "
 							+ " WHERE review_et_id = :reviewId").setInteger("reviewId", review.getReviewId())
 					.setResultTransformer(Transformers.aliasToBean(ETMediaReviewDTO.class));
@@ -129,10 +140,17 @@ public class PreSaleDAO implements IPresaleDAO {
 		Session sess = ETDBConnectionManager.getCurrentSession();
 		sess.getTransaction();
 
-		Query query = sess.createQuery("UPDATE et_reviews SET reviewCalification = "
-				+ "(:rate+(SELECT reviewCalification from et_reviews WHERE review_et_id = :reviewId)) "
+		String querySelect = "SELECT et.reviewCalification from et_reviews et WHERE et.review_et_id = :reviewId";
+		
+		Query q = sess.createSQLQuery(querySelect).setInteger("reviewId", rate.getReviewId());
+		List ret = q.list();
+		Integer rating = (Integer)ret.get(0);
+		
+		Query query = sess.createSQLQuery("UPDATE et_reviews rev SET reviewCalification = "
+				+ ":rate+:rating "
 				+ "WHERE review_et_id = :reviewId").
 				setInteger("reviewId", rate.getReviewId()).
+				setInteger("rating", rating).
 				setInteger("rate", rate.getRate());
 		
 		return query.executeUpdate() > 0;

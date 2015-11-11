@@ -4,6 +4,14 @@ public class ETApiFunctionalityDTO {
 
 	private String name;
 	private String htmlElement;
+	private String visualId;
+	
+	public String getVisualId() {
+		return visualId;
+	}
+	public void setVisualId(String visualId) {
+		this.visualId = visualId;
+	}
 	public String getName() {
 		return name;
 	}
@@ -18,7 +26,7 @@ public class ETApiFunctionalityDTO {
 	}
 	@Override
 	public String toString() {
-		return "ETApiFunctionalityDTO [name=" + name + ", htmlElement=" + htmlElement + "]";
+		return "ETApiFunctionalityDTO [name=" + name + ", htmlElement=" + htmlElement + ", visualId=" + visualId + "]";
 	}
 
 	

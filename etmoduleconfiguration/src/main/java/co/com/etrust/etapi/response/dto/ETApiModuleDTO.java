@@ -6,6 +6,7 @@ public class ETApiModuleDTO {
 	
 	private String moduleName;
 	private String moduleDescription;
+	private String serviceName;
 	
 	private List<ETApiFunctionalityDTO> functionalities;
 
@@ -31,6 +32,14 @@ public class ETApiModuleDTO {
 
 	public void setFunctionalities(List<ETApiFunctionalityDTO> functionalities) {
 		this.functionalities = functionalities;
+	}
+
+	public String getServiceName() {
+		return serviceName;
+	}
+
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
 	}
 
 	@Override

@@ -1,81 +1,162 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>title</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  </head>
-  <body>
-    
-      <div class="row"id="hola"></div>
-      
-<script>
-var reviewMetadata;
-    
- var etrust = {
-    etHost : "http://localhost:8080/etmoduleconfiguration/",
-    etUser : "prestashop",
-    etPass : "prestashop",
+var etrustServices = new EtrustServicesEnum();
 
-    getPresaleMetadata : "/etapi/presale/getFunctionalities",
-    productReviewServiceName: "/presale/productreview/create",
-
-    getProductReviewMeta : getProductReviewMeta 
+function EtrustServicesEnum() {
+    this.PRDUCT_REVIEW = "presale_productreview";
 }
+
+function Etrust(serviceName,element){
     
-    function getProductReviewMeta(serviceName){
+var etHost = "http://localhost:8080/etmoduleconfiguration/",
+etUser = "prestashop",
+etPass = "prestashop",
+service = serviceName,
+getPresaleMetadata = "etapi/presale/getFunctionalities",
+addReviewURL = "etapi/presale/productreview/add",
+productReviewServiceName = "/presale/productreview/create",
+getProductReviewUrl="etapi/presale/productreview/getReview",
+rateComment="/etapi/presale/productreview/rate",
+metaData,
+formId;
+
+    getModuleMetaData(serviceName);
+
+function getModuleMetaData(service){
+
+    var self = this;
+    $.ajax({
+        type:"GET",
+        url:  etHost +  getPresaleMetadata,
+        data: {"serviceName":service},
+        success: function(data){
+            if(data.response && data.response.length > 0)
+            metaData = data.response[0];
+            addEtrustSaveComponents();
+        },
+        fail: function(data){
+            console.log("Error in ETRUST" + data);
+        }
+    });
+}
+
+function addEtrustSaveComponents(){
+
+    var ele = $("#"+element);
+    ele.html("");
+    
+    
+    if(!metaData || metaData.functionalities.length == 0) return;
+    
+    formId = metaData.serviceName;
+    var html = openForm(formId);
+    $.each(metaData.functionalities,function(i,item){
         
-        var self = this;
+        switch (item.htmlElement){
+            
+            case "forminputtext":
+                html += addFormInputText(ele,item);
+                break;
+            case "forminputarea":
+                html += addFormInputText(ele,item);
+            break;
+            case "formstars":
+                html += addFormInputText(ele,item);
+            break;
+            case "formcheck":
+                html += addFormInputText(ele,item);
+            break;
+            case "formdate":
+                html += addFormInputText(ele,item);
+            break;
+        }
+       
+       
+    });
+     html += closeForm();
+     ele.append(html);
+    
+}
+    function openForm(id){
+        return "<form id='"+id+"'>";
+    }
+    
+    function closeForm(){
+        return "</form>"
+    }
+    
+    function addFormInputText(element,item){
         
-        $.ajax({
-            url: etrust.etHost + etrust.getPresaleMetadata,
-            data: {"serviceName":etrust.productReviewServiceName},
+        var input = "<div class = 'form-group'>";
+        input += "<label for='"+item.visualId+"'>"+item.name+"</label>";
+        input += "<input type="+text+" class='form-control' id="+item.visualId+" placeholder="+item.name+">";
+        input +='</div>';
+    }
+
+    
+
+function getProductReview(pid, customerId, saleId,element){
+    var url =  etHost +  getProductReviewUrl;
+    $.ajax({
+            type:"GET",
+            url:  etHost +  getProductReviewUrl +"?productId="+pid,
+            contentType: "application/json",
             success: function(data){
-                callBackMetaEtrust(data.response);
+                console.log("ys");
             },
             fail: function(data){
                 console.log("Error in ETRUST" + data);
+            }
+        });
+}
+
+function rateComment(reviewId,rate){
+    var rate = {"reviewId":reviewId,"rate":rate};
+
+    $.ajax({
+
+        type:"POST",
+        url:  etHost +  rateComment,
+        data : JSON.stringify(rate),
+        contentType: "application/json",
+        success: function(data){
+            console.log("success");
+        }
+    });
+
+}
+    
+function saveProductReview(productId, customerId, saleId){
+    var review = {productId:productId, customerId:customerId, saleId:saleId};
+        
+    $.each(metaData[0].functionalities,function(i,item){
+        
+        
+        var element = $("#"+item.visualId);
+        var value = element.val();
+        
+        if(value && value.length > 0)
+        switch (item.htmlElement){
+            case "inputtext":
+                review[item.visualId] = value;
+                break;
+        }
+        
+        
+    });
+    
+    $.ajax({
+            type: "POST",
+            url:  etHost +  addReviewURL,
+            dataType : "json",
+            data : JSON.stringify(review),
+            contentType: "application/json",
+            success: function(data){
+                alert("test");
             }
         });
         
     
 }
     
-function callBackMetaEtrust(meta){
-    reviewMetadata = meta;
-}
 
-function initEtrust() {
-    var c = "getProductReviewMeta";
-    etrust[c](etrust.productReviewServiceName);
-};
-    
-    
-function addEtrustSaveComponents(options){
-
-    var ele = $("#"+options["element"]);
-    ele.html("");
-    
-    if(!reviewMetadata || reviewMetadata[0].functionalities.length == 0) return;
-    
-    $.each(reviewMetadata[0].functionalities,function(i,item){
-        var itemId = "et"+item.name.replace(/ /g,'');
-        switch (item.htmlElement){
-            case "inputtext":
-                
-                ele.append("<div class = 'form-group'>");
-                ele.append(item.name+":<br>");
-                ele.append('<input type="text" id='+itemId+'><br>');
-                ele.append('</div>');
-                
-                break;
-        }
-    });
     
 }
-
-</script>
-      
-  </body>
-</html>
-
