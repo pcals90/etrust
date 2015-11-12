@@ -1,213 +1,373 @@
 var etrustServices = new EtrustServicesEnum();
 
 function EtrustServicesEnum() {
-    this.PRDUCT_REVIEW = "presale_productreview";
+    this.PRDUCT_REVIEW = "et_presale_preview";
 }
 
-function Etrust(serviceName,element){
+//callBackReviews, serviceName, createReviewElement, showReviewElement, displayData
+function Etrust(options){
     
-var etHost = "http://localhost:8080/etmoduleconfiguration/",
+    if(!options || !options["serviceName"])
+        throw "ETRUST EXCEPTION -> No service invoked";
+
+var Utils = new EtrustUtilities()
+etHost = "http://localhost:8080/etmoduleconfiguration/",
 etUser = "prestashop",
-etPass = "prestashop",
-service = serviceName,
-getPresaleMetadata = "etapi/presale/getFunctionalities",
-addReviewURL = "etapi/presale/productreview/add",
-productReviewServiceName = "/presale/productreview/create",
-getProductReviewUrl="etapi/presale/productreview/getReview",
-rateComment="/etapi/presale/productreview/rate",
-metaData,
-formId;
+serviceName = options["serviceName"]
+etPass = "prestashop";
+    
+this.modules={};
 
-    getModuleMetaData(serviceName);
-
-function getModuleMetaData(service){
-
-    var self = this;
-    $.ajax({
-        type:"GET",
-        url:  etHost +  getPresaleMetadata,
-        data: {"serviceName":service},
-        success: function(data){
-            if(data.response && data.response.length > 0)
-            metaData = data.response[0];
-            addEtrustSaveComponents();
-        },
-        fail: function(data){
-            console.log("Error in ETRUST" + data);
-        }
-    });
+function ProductReview(){ 
+        
+    if (!options["productId"])
+        throw "ETRUST EXCEPTION -> Product id is mandatory for using this service ::: "+etrustServices.PRDUCT_REVIEW;
+    this.enable = new EnableProductReview();
+}
+    
+if(options["serviceName"] === etrustServices.PRDUCT_REVIEW){
+    this.modules.productReviewModules = new ProductReview();
 }
 
-function addEtrustSaveComponents(){
+    //Presale - productreview - save new
+    if(options["createReviewElement"])
+        this.psRvNew = this.modules.productReviewModules.enable.loadModules.createProductReview.saveProductReview;
 
-    var ele = $("#"+element);
-    ele.html("");
     
-    
-    if(!metaData || metaData.functionalities.length == 0) return;
-    
-    formId = metaData.serviceName;
-    var htmlData = openForm(formId);
-    $.each(metaData.functionalities,function(i,item){
+function EnableProductReview(){
         
-        switch (item.htmlElement){
+        var getPresaleMetadata = "etapi/presale/getFunctionalities",
+        getProductReviewUrl="etapi/presale/productreview/getReview",
+        rateComment="/etapi/presale/productreview/rate",
+        productRevMetaData, metadataLoaded=false;
+    
+        this.loadModules = new loadProductReviewModules();
             
-            case "forminputtext":
-                htmlData += addFormInputText(ele,item);
-                break;
-            case "forminputarea":
-                htmlData += addFormArea(ele,item);
-            break;
-            case "formstars":
-                htmlData += addFormStars(ele,item);
-            break;
-            case "formcheck":
-                htmlData += addFormCheck(ele,item);
-            break;
-            case "formdate":
-                htmlData += addFormDate(ele,item);
-            break;
-        }
-       
-    });
-     htmlData += closeForm();
-     ele.append(htmlData);
+        getModuleMetaData(etrustServices.PRDUCT_REVIEW,this);
     
-}
-    function openForm(id){
-        return "<form id='"+id+"' style=width:85%;margin-left:5%;>";
-    }
+        function getModuleMetaData(service,thiz){
+            
+            var self = thiz;
+                $.ajax({
+                    type:"GET",
+                    url:  etHost + getPresaleMetadata,
+                    data: {"serviceName":service},
+                    success: function(data){
+                        if(data.response && data.response.length > 0)
+                        productRevMetaData = data.response[0];
+                        thiz.loadModules = new loadProductReviewModules();
+                        metadataLoaded = true;
+                    },
+                    fail: function(data){
+                        console.log("Error in ETRUST" + data);
+                    }
+                });
+            }
     
-    function closeForm(){
-        return "</form>"
-    }
-    
-    function addFormArea(element,item){
-        
-        var input = "<div class = 'form-group'>\n";
-        input += "<label for='"+item.visualId+"'>"+item.name+"</label>\n";
-        input += "<textarea class='form-control' rows='3' id='"+item.visualId+"'></textarea>\n";
-        input +='</div>\n';
-        
-        return input;
-    }
-    
-    function addFormStars(element,item){
-        
-        var input = "<div class = 'form-group'>\n";
-        input += "<label for='"+item.visualId+"'>"+item.name+"</label>\n";
-        
-            input +='<div class="star_content">';
+        function createProductReview(element){
+            var addReviewURL = "etapi/presale/productreview/add";     
+            this.saveProductReview = function saveProductReview(){
+                var review = {productId:options["productId"], customerId:options["customerId"], saleId:options["saleId"]};
 
-                input +='<input class="star not_uniform" style="margin-right: 2px; height:inherit; width:inherit;" type="radio" value="1" />\n';
-                input +='<input class="star not_uniform" style="margin-right: 2px; height:inherit; width:inherit;" type="radio" value="2" />\n';
-                input +='<input class="star not_uniform" style="margin-right: 2px; height:inherit; width:inherit;" type="radio" value="3" />\n';
-                input +='<input class="star not_uniform" style="margin-right: 2px; height:inherit; width:inherit;" type="radio" value="4" />\n';
-                input +='<input class="star not_uniform" style="margin-right: 2px; height:inherit; width:inherit;" type="radio" value="5" />\n';
-                input +='<div class="clearfix"></div>';
+                $.each(productRevMetaData.functionalities,function(i,item){
+                    var value = getElementValue(item);
+                    if(value && value.length > 0)
+                        review[item.visualId] = value;
+                });
+
+                $.ajax({
+                        type: "POST",
+                        url:  etHost +  addReviewURL,
+                        dataType : "json",
+                        data : JSON.stringify(review),
+                        contentType: "application/json",
+                        success: function(data){
+                            alert("test");
+                        }
+                    });
+            }
+                 
+            if(!productRevMetaData || productRevMetaData.functionalities.length == 0) return;
+              
+            function openForm(){
+                return "<form id='form"+productRevMetaData.serviceName+"_create' style=width:85%;margin-left:5%;>";
+            }
+
+            function addButtonForm(id){
+
+                var input = "<div class = 'row'>"; 
+                input += "<button type='button' class='btn btn-default button' onclick='etrust.psRvNew()'>Guardar</button>\n";
+                input += "</div>";
+
+                return input;
+
+            }
+            
+            function closeForm(){
+                return "</form>"
+            }
+            
+            function getElementValue(item){
+
+                switch (item.htmlElement){
+
+                        case "forminputtext":
+                            return $("#"+item.visualId).val();
+                            break;
+                        case "forminputarea":
+                            return $("#"+item.visualId).val();
+                        break;
+                        case "formstars":
+                            return $("#"+item.visualId).val();
+                        break;
+                        case "formcheck":
+                            return $("#"+item.visualId).attr("checked")?true:false;
+                        break;
+                        case "formdate":
+                            return $("#"+item.visualId).val();
+                        break;
+                    }
+
+            }
+             
+
+            var ele = $("#"+element);
+            ele.html("");
+            
+            var htmlData = openForm(productRevMetaData.serviceName);
+            
+            $.each(productRevMetaData.functionalities,function(i,item){
+                if(item.active)
+                switch (item.htmlElement){
+                    
+                    case "forminputtext":
+                        htmlData += Utils.Visual.addFormInputText(ele,item);
+                        break;
+                    case "forminputarea":
+                        htmlData += Utils.Visual.addFormArea(ele,item);
+                    break;
+                    case "formstars":
+                        htmlData += Utils.Visual.addFormStars(ele,item);
+                    break;
+                    case "formcheck":
+                        htmlData += Utils.Visual.addFormCheck(ele,item);
+                    break;
+                    case "formdate":
+                        htmlData += Utils.Visual.addFormDate(ele,item);
+                    break;
+                }
+
+            });
+            htmlData += addButtonForm(productRevMetaData.serviceName);
+            htmlData += closeForm();
+            ele.append(htmlData);
+        }
+    
+        function showProductReview(){
         
+            this.productReviews = function getProductReview(){
+                var url =  etHost +  getProductReviewUrl;
+                $.ajax({
+                        type:"GET",
+                        url:  etHost +  getProductReviewUrl +"?productId="+options["productId"],
+                        contentType: "application/json",
+                        success: function(data){
+                            if(data.response)
+                            if(options["displayData"])
+                                displayReviews(data.response);
+                            else
+                                options["callBackReviews"](data);
+                        },
+                        fail: function(data){
+                            console.log("Error in ETRUST" + data);
+                        }
+                    });
+            }
+            
+            function getFuncByName(name){
+                
+                var found;
+                while (!metadataLoaded);
+                $.each(productRevMetaData.functionalities,function(i,item){
+                    
+                    if (name === item.visualId){
+                        found = item;
+                        return;
+                    }
+                
+                });
+                
+                return found;
+            }
+            
+            function displayReviews(reviews){
+                var htmlData = Utils.Visual.openRowDiv();
+                htmlData += Utils.Visual.openColDiv(12);
+                var ele = $("#"+options["showReviewElement"]);
+                
+                $.each(reviews,function(i,item){
+                            
+                    htmlData+=Utils.Visual.openColDiv(6);
+                    
+                    for(var prop in item){
+                        var data = item[prop];
+                        var func = getFuncByName(prop);
+                        if(func && func.status ==="active" && data && data!="" && data!="null"){
+                            
+                            htmlData += Utils.Visual.openColDiv(6);
+                            htmlData += func.name;
+                            htmlData += Utils.Visual.closeDiv();
+                            switch(func.htmlElement){
+                                case "forminputtext":
+                                    htmlData += Utils.Visual.openColDiv(6);
+                                    htmlData += Utils.Visual.paragr(func.visualId,data);
+                                    htmlData += Utils.Visual.closeDiv();
+                                    break;
+                                case "forminputarea":
+                                    htmlData += Utils.Visual.openColDiv(6);
+                                    htmlData += Utils.Visual.paragr(func.visualId,data);
+                                    htmlData += Utils.Visual.closeDiv();
+                                break;
+                                case "formstars":
+                                    htmlData += Utils.Visual.openColDiv(6);
+                                    htmlData += Utils.Visual.closeDiv();
+                                    htmlData += Utils.Visual.openColDiv(6);
+                                    htmlData += Utils.Visual.addFormStars(ele,func,{hideLabel:true});
+                                    htmlData += Utils.Visual.closeDiv();
+                                    $("input[name="+func.visualId+"][value=" + data + "]").prop('checked', true);
+                                break;
+                                case "formcheck":
+                                    htmlData += Utils.Visual.openColDiv(6);
+                                    htmlData += Utils.Visual.paragr(func.visualId,(data =="on"?"Sí":"No"));
+                                    htmlData += Utils.Visual.closeDiv();
+                                    $("input[name="+func.visualId+"][value=" + data + "]").prop('checked', true);
+                                break;
+                                case "formdate":
+                                    htmlData += Utils.Visual.openColDiv(6);
+                                    htmlData += Utils.Visual.addFormStars(ele,func);
+                                    htmlData += Utils.Visual.closeDiv();
+                                    $("input[name="+func.visualId+"][value=" + data + "]").prop('checked', true);
+                                break;
+                            }
+                        }
+                    }
+                    
+                    htmlData += Utils.Visual.closeDiv();
+                    htmlData += Utils.Visual.lnBreak();
+                    
+                });
+                
+                Utils.Visual.closeDiv();
+                Utils.Visual.closeDiv();
+                ele.append(htmlData);
+            }
+            
+            this.productReviews();
+            
+            
+        }
+        
+        function loadProductReviewModules(){
+            if(options["createReviewElement"]){
+               this.createProductReview  = new createProductReview(options["createReviewElement"]);
+            }
+            if(options["showReviewElement"]){
+               this.showProductReviews  = new showProductReview(options["createReviewElement"]);
+            }
+        }
+}
+
+        
+function EtrustUtilities(){
+    
+    function VisualObjects(){
+        this.addFormArea = function addFormArea(element,item){
+
+            var input = "<div class = 'form-group'>\n";
+            input += "<label for='"+item.visualId+"'>"+item.name+"</label>\n";
+            input += "<textarea name = '"+item.visualId+"' class='form-control' rows='3' id='"+item.visualId+"'></textarea>\n";
             input +='</div>\n';
-        input +='</div>\n';
-        
 
-        return input;
-    }
-    
-    function addFormCheck(element,item){
-        
-        var input = "<div class = 'checkbox'>\n";
-        input += "<label>\n";
-        input += "<input type='checkbox' id="+item.visualId+" style='width: inherit;height: inherit;'>\n";
-        input += item.name;
-        input += "</label>\n";
-        input +='</div>\n';
-        
-        return input;
-    }
-    
-    function addFormDate(element,item){
-        
-        var input = "<div class = 'form-group'>\n";
-        input += "<label for='"+item.visualId+"'>"+item.name+"</label>\n";
-        input += "<input type='date' class='form-control' id='"+item.visualId+"' placeholder="+item.name+">\n";
-        input +='</div>\n';
-        
-        return input;
-    }
-    
-    function addFormInputText(element,item){
-        
-        var input = "<div class = 'form-group'>\n";
-        input += "<label for='"+item.visualId+"'>"+item.name+"</label>\n";
-        input += "<input type='text' class='form-control' id='"+item.visualId+"' placeholder="+item.name+">\n";
-        input +='</div>';
-        
-        return input;
-    }
-
-    
-
-function getProductReview(pid, customerId, saleId,element){
-    var url =  etHost +  getProductReviewUrl;
-    $.ajax({
-            type:"GET",
-            url:  etHost +  getProductReviewUrl +"?productId="+pid,
-            contentType: "application/json",
-            success: function(data){
-                console.log("ys");
-            },
-            fail: function(data){
-                console.log("Error in ETRUST" + data);
-            }
-        });
-}
-
-function rateComment(reviewId,rate){
-    var rate = {"reviewId":reviewId,"rate":rate};
-
-    $.ajax({
-
-        type:"POST",
-        url:  etHost +  rateComment,
-        data : JSON.stringify(rate),
-        contentType: "application/json",
-        success: function(data){
-            console.log("success");
+            return input;
         }
-    });
 
-}
-    
-function saveProductReview(productId, customerId, saleId){
-    var review = {productId:productId, customerId:customerId, saleId:saleId};
-        
-    $.each(metaData[0].functionalities,function(i,item){
-        
-        
-        var element = $("#"+item.visualId);
-        var value = element.val();
-        
-        if(value && value.length > 0)
-        switch (item.htmlElement){
-            case "inputtext":
-                review[item.visualId] = value;
-                break;
+        this.addFormStars = function addFormStars(element,item, labelopt){
+
+            var input = "<div class = 'form-group'>\n";
+            if(!labelopt || !labelopt["hideLabel"])
+            input += "<label for='"+item.visualId+"'>"+item.name+"</label>\n";
+
+                input +='<div class="star_content">';
+
+                    input +='<input class="star not_uniform" style="margin-right: 2px; height:inherit; width:inherit;" type="radio" name = '+item.visualId+' value="1" />\n';
+                    input +='<input class="star not_uniform" style="margin-right: 2px; height:inherit; width:inherit;" type="radio" name = '+item.visualId+' value="2" />\n';
+                    input +='<input class="star not_uniform" style="margin-right: 2px; height:inherit; width:inherit;" type="radio" name = '+item.visualId+' value="3" />\n';
+                    input +='<input class="star not_uniform" style="margin-right: 2px; height:inherit; width:inherit;" type="radio" name = '+item.visualId+' value="4" />\n';
+                    input +='<input class="star not_uniform" style="margin-right: 2px; height:inherit; width:inherit;" type="radio" name = '+item.visualId+' value="5" />\n';
+                    input +='<div class="clearfix"></div>';
+                input +='</div>\n';
+            input +='</div>\n';
+
+
+            return input;
+        }
+
+        this.addFormCheck = function addFormCheck(element,item){
+
+            var input = "<div class = 'checkbox'>\n";
+            input += "<label>\n";
+            input += "<input name='"+item.visualId+"'type='checkbox' id="+item.visualId+" style='width: inherit;height: inherit;'>\n";
+            input += item.name;
+            input += "</label>\n";
+            input +='</div>\n';
+
+            return input;
+        }
+
+        this.addFormDate = function addFormDate(element,item){
+
+            var input = "<div class = 'form-group'>\n";
+            input += "<label for='"+item.visualId+"'>"+item.name+"</label>\n";
+            input += "<input name='"+item.visualId+"' type='date' class='form-control' id='"+item.visualId+"' placeholder="+item.name+">\n";
+            input +='</div>\n';
+
+            return input;
+        }
+
+        this.addFormInputText = function addFormInputText(element,item){
+
+            var input = "<div class = 'form-group'>\n";
+            input += "<label for='"+item.visualId+"'>"+item.name+"</label>\n";
+            input += "<input name='"+item.visualId+"' type='text' class='form-control' id='"+item.visualId+"' placeholder="+item.name+">\n";
+            input +='</div>';
+
+            return input;
         }
         
+        this.openRowDiv = function(){
+            var input = "<div class = 'row'>\n";
+            return input;
+        }
         
-    });
-    
-    $.ajax({
-            type: "POST",
-            url:  etHost +  addReviewURL,
-            dataType : "json",
-            data : JSON.stringify(review),
-            contentType: "application/json",
-            success: function(data){
-                alert("test");
-            }
-        });
+        this.openColDiv = function (anchor){
+        var input = "<div class = 'col-xs-"+anchor+"'>\n";
+            return input;
+        }
         
+        this.closeDiv = function(){ 
+            return "</div>\n";
+        }
+        
+        this.lnBreak = function(){ 
+            return "<hr>\n";
+        }
+        
+        this.paragr = function(itemid,text){ 
+            return "<p id='"+itemid+"'>"+text+"</p>\n";
+        }
+    }
     
-}   
+    this.Visual = new VisualObjects();
+}
+    
 }

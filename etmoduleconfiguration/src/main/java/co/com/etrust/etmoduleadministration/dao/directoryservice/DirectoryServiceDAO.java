@@ -22,7 +22,7 @@ public class DirectoryServiceDAO implements IDirectoryServiceDAO {
 		List<ETApiModuleDTO> results = new ArrayList<ETApiModuleDTO>();
 
 		String stQuery = "SELECT em.module_Name as moduleName, em.module_Description as moduleDescription,"
-				+ " ef.name as name, ef.html_Element as htmlElement, ef.visualId as visualId, sd.service_name as serviceName "
+				+ " ef.name as name, ef.html_Element as htmlElement, ef.visualId as visualId, sd.service_name as serviceName, ef.status as funcStatus"
 				+ " FROM et_service_directory sd, et_modules em, et_functionalities ef, et_module_service ms"
 				+ " Where ms.service_id = sd.id_service";
 		
@@ -30,7 +30,7 @@ public class DirectoryServiceDAO implements IDirectoryServiceDAO {
 			stQuery += " AND sd.service_name = :serviceName";
 		
 		stQuery += "	AND ms.module_id = em.module_id" + "	AND em.module_id = ef.module_id"
-				+ "	AND em.module_status = 'active'" + " AND ef.status = 'active'";
+				+ "	AND em.module_status = 'active'";
 
 		Query query = sess.createSQLQuery(stQuery);
 
@@ -49,10 +49,12 @@ public class DirectoryServiceDAO implements IDirectoryServiceDAO {
 					mod.setModuleName((String) tuple[0]);
 					mod.setModuleDescription((String) tuple[1]);
 					mod.setServiceName((String)tuple[5]);
+					
 					ETApiFunctionalityDTO func = new ETApiFunctionalityDTO();
 					func.setName((String) tuple[2]);
 					func.setHtmlElement((String) tuple[3]);
 					func.setVisualId((String) tuple[4]);
+					func.setStatus((String)tuple[6]);
 					mod.getFunctionalities().add(func);
 
 					found = true;
@@ -71,7 +73,8 @@ public class DirectoryServiceDAO implements IDirectoryServiceDAO {
 				func.setName((String) tuple[2]);
 				func.setHtmlElement((String) tuple[3]);
 				func.setVisualId((String) tuple[4]);
-
+				func.setStatus((String)tuple[6]);
+				
 				module.getFunctionalities().add(func);
 				results.add(module);
 
