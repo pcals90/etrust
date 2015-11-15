@@ -1,16 +1,14 @@
-package co.com.etrust.etapi.request;
+package co.com.etrust.etapi.response.dto;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ETReviewDTO {
+public class ETReviewReport {
 
-	private int saleId;
-	private int productId;
-	private int customerId;
-
+	private Map<String,String> ecommerceInfo;
+	
 	private int reviewId;
-	private List<ETMediaReviewDTO> mediaReview;
-
+	
 	private String etTituloCalificacion;
 	private String etComentarioGeneral;
 	private int etCalificacionProducto;
@@ -25,45 +23,25 @@ public class ETReviewDTO {
 	private String reviewType;
 	private String reviewDate;
 	private int reviewCalification;
-
-	public String getReviewDate() {
-		return reviewDate;
+	
+	public ETReviewReport(){
+		ecommerceInfo = new HashMap<String,String>();
 	}
 
-	public int getReviewCalification() {
-		return reviewCalification;
+	public Map<String, String> getEcommerceInfo() {
+		return ecommerceInfo;
 	}
 
-	public void setReviewCalification(int reviewCalification) {
-		this.reviewCalification = reviewCalification;
+	public void setEcommerceInfo(Map<String, String> ecommerceInfo) {
+		this.ecommerceInfo = ecommerceInfo;
 	}
 
-	public void setReviewDate(String reviewDate) {
-		this.reviewDate = reviewDate;
+	public int getReviewId() {
+		return reviewId;
 	}
 
-	public int getSaleId() {
-		return saleId;
-	}
-
-	public void setSaleId(int saleId) {
-		this.saleId = saleId;
-	}
-
-	public int getProductId() {
-		return productId;
-	}
-
-	public void setProductId(int productId) {
-		this.productId = productId;
-	}
-
-	public int getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
+	public void setReviewId(int reviewId) {
+		this.reviewId = reviewId;
 	}
 
 	public String getEtTituloCalificacion() {
@@ -162,33 +140,36 @@ public class ETReviewDTO {
 		this.reviewType = reviewType;
 	}
 
-	public int getReviewId() {
-		return reviewId;
+	public String getReviewDate() {
+		return reviewDate;
 	}
 
-	public void setReviewId(int reviewId) {
-		this.reviewId = reviewId;
+	public void setReviewDate(String reviewDate) {
+		this.reviewDate = reviewDate;
 	}
 
-	public List<ETMediaReviewDTO> getMediaReview() {
-		return mediaReview;
+	public int getReviewCalification() {
+		return reviewCalification;
 	}
 
-	public void setMediaReview(List<ETMediaReviewDTO> mediaReview) {
-		this.mediaReview = mediaReview;
+	public void setReviewCalification(int reviewCalification) {
+		this.reviewCalification = reviewCalification;
 	}
 
 	@Override
 	public String toString() {
-		return "ETReviewDTO [saleId=" + saleId + ", productId=" + productId + ", customerId=" + customerId
-				+ ", etTituloCalificacion=" + etTituloCalificacion + ", etComentarioGeneral=" + etComentarioGeneral
-				+ ", etCalificacionProducto=" + etCalificacionProducto + ", etCalificacionServicioCliente="
-				+ etCalificacionServicioCliente + ", etSatisfaccionGeneral=" + etSatisfaccionGeneral
-				+ ", etProsProducto=" + etProsProducto + ", etContrasProducto=" + etContrasProducto
-				+ ", etMejorasProducto=" + etMejorasProducto + ", etRecomendarAmigo=" + etRecomendarAmigo
-				+ ", etComprariaDeNuevo=" + etComprariaDeNuevo + ", etUtilidadProducto=" + etUtilidadProducto
-				+ ", reviewType=" + reviewType + ", reviewDate=" + reviewDate + ", reviewId=" + reviewId
-				+ ", mediaReview=" + mediaReview + "]";
+		return "ETReviewReport [ecommerceInfo=" + ecommerceInfo + ", reviewId=" + reviewId + ", etTituloCalificacion="
+				+ etTituloCalificacion + ", etComentarioGeneral=" + etComentarioGeneral + ", etCalificacionProducto="
+				+ etCalificacionProducto + ", etCalificacionServicioCliente=" + etCalificacionServicioCliente
+				+ ", etSatisfaccionGeneral=" + etSatisfaccionGeneral + ", etProsProducto=" + etProsProducto
+				+ ", etContrasProducto=" + etContrasProducto + ", etMejorasProducto=" + etMejorasProducto
+				+ ", etRecomendarAmigo=" + etRecomendarAmigo + ", etComprariaDeNuevo=" + etComprariaDeNuevo
+				+ ", etUtilidadProducto=" + etUtilidadProducto + ", reviewType=" + reviewType + ", reviewDate="
+				+ reviewDate + ", reviewCalification=" + reviewCalification + "]";
 	}
 
+	
+	
+	
+	
 }

@@ -12,6 +12,7 @@ import co.com.etrust.etmoduleadministration.dao.moduleavailability.IModuleAvaila
 import co.com.etrust.etmoduleconfiguration.response.dto.ETCurrentModules;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETExistingInitialConfDTO;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETFunctionalities;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETRelationMetaData;
 
 @Service("moduleAvailabilityService")
 class ModuleAvailabilityService {
@@ -83,10 +84,10 @@ class ModuleAvailabilityService {
 	}
 
 	public Boolean saveConfiguration(ETExistingInitialConfDTO etExistingInitialConfDTO,
-			List<ETFunctionalities> functionalities) {
+			ETRelationMetaData metadata) {
 		Transaction tx = ETDBConnectionManager.initTransaction(etExistingInitialConfDTO);
 		try{
-			boolean ret =  availabilityDao.saveConfiguration(functionalities);
+			boolean ret =  availabilityDao.saveConfiguration(metadata);
 			ETDBConnectionManager.closeAndCommitTransaction(tx);
 			return ret;
 		}catch(RuntimeException re){

@@ -12,6 +12,6 @@ public interface IPresaleDAO {
 
 	public List<ETReviewDTO> getProductReview(ETReviewFiltersDTO filters);
 
-	public Boolean getProductReview(ETReviewRateDTO rate);
+	public Boolean rateComment(ETReviewRateDTO rate);
 
 }

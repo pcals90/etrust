@@ -109,7 +109,8 @@ public class PreSaleDAO implements IPresaleDAO {
 				+ " r.buy_again as etComprariaDeNuevo, CAST(r.review_date as CHAR) as reviewDate, r.review_product_utility as etUtilidadProducto, "
 				+ "	r.review_type as reviewType, r.reviewCalification as reviewCalification"
 				+ " FROM et_reviews r"
-				+ " WHERE r.product_et_id = :productId";
+				+ " WHERE r.product_et_id = :productId"
+				+ " ORDER BY r.review_date desc";
 		
 		
 		Query query = sess
@@ -135,7 +136,7 @@ public class PreSaleDAO implements IPresaleDAO {
 	}
 
 	@Override
-	public Boolean getProductReview(ETReviewRateDTO rate) {
+	public Boolean rateComment(ETReviewRateDTO rate) {
 		
 		Session sess = ETDBConnectionManager.getCurrentSession();
 		sess.getTransaction();

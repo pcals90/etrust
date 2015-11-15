@@ -1,3 +1,119 @@
+
+$(function(){
+    
+    $("#downloadEtrustReports").click(function(e){
+        e.preventDefault();
+        var form = $(this).parents('form:first');
+        
+        $.ajax({
+            type:"GET",
+            url:"http://localhost:8080/etmoduleconfiguration/etapi/reports/getReportByModuleId",
+            data:{"moduleId":form.serializeArray()[1].value},
+            dataType: "json",
+            success: function(data){
+                readReportData(data.response);
+            }
+        });
+        
+        function readReportData(data){
+            
+            for(var extra in data){
+                var extraInfo = data[extra].ecommerceInfo;
+
+                for (var prop in extraInfo){
+                    data[extra][prop] = extraInfo[prop];
+                }
+
+                delete data[extra]["ecommerceInfo"];
+            }
+            JSONToCSVConvertor(data,"ETrust report-"+getNowAsString(),true);
+        }
+    });
+    
+    function getNowAsString(){
+        
+        var currentdate = new Date();
+        
+        var datetime = currentdate.getDate() + "_"
+                + (currentdate.getMonth()+1)  + "_" 
+                + currentdate.getFullYear() + "-"  
+                + currentdate.getHours() + "_"  
+                + currentdate.getMinutes();
+        
+        return datetime;
+    }
+    
+    function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
+    //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
+    var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+    
+    var CSV = '';    
+
+    //This condition will generate the Label/Header
+    if (ShowLabel) {
+        var row = "";
+        
+        //This loop will extract the label from 1st index of on array
+        for (var index in arrData[0]) {
+            
+            //Now convert each value to string and comma-seprated
+            row += index + ',';
+        }
+
+        row = row.slice(0, -1);
+        
+        //append Label row with line break
+        CSV += row + '\r\n';
+    }
+    
+    //1st loop is to extract each row
+    for (var i = 0; i < arrData.length; i++) {
+        var row = "";
+        
+        //2nd loop will extract each column and convert it in string comma-seprated
+        for (var index in arrData[i]) {
+            row += '"' + arrData[i][index] + '",';
+        }
+
+        row.slice(0, row.length - 1);
+        
+        //add a line break after each row
+        CSV += row + '\r\n';
+    }
+
+    if (CSV == '') {        
+        alert("Invalid data");
+        return;
+    }   
+    
+    //this will remove the blank-spaces from the title and replace it with an underscore
+    var fileName = ReportTitle.replace(/ /g,"_");   
+    
+    //Initialize file format you want csv or xls
+    var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+    
+    // Now the little tricky part.
+    // you can use either>> window.open(uri);
+    // but this will not work in some browsers
+    // or you will not get the correct file extension    
+    
+    //this trick will generate a temp <a /> tag
+    var link = document.createElement("a");    
+    link.href = uri;
+    
+    //set the visibility hidden so it will not effect on your web-layout
+    link.style = "visibility:hidden";
+    link.download = fileName + ".csv";
+    
+    //this part will append the anchor tag and remove it after automatic click
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+});
+
+
+
 var etrustServices = new EtrustServicesEnum();
 
 function EtrustServicesEnum() {
@@ -30,8 +146,16 @@ if(options["serviceName"] === etrustServices.PRDUCT_REVIEW){
 }
 
     //Presale - productreview - save new
-    if(options["createReviewElement"])
+    if(options["createReviewElement"]){
         this.psRvNew = this.modules.productReviewModules.enable.loadModules.createProductReview.saveProductReview;
+        this.psRvfilImg = this.modules.productReviewModules.enable.loadModules.createProductReview.prepareEtrustUploadImg;
+        this.psRvfilVid = this.modules.productReviewModules.enable.loadModules.createProductReview.prepareEtrustUploadVid;
+    }
+    if(options["showReviewElement"]){
+        this.psCaRev = this.modules.productReviewModules.enable.loadModules.showProductReviews.rateReview;
+        this.psOrdCm = this.modules.productReviewModules.enable.loadModules.showProductReviews.orderReviews;
+    }
+    
 
     
 function EnableProductReview(){
@@ -65,7 +189,7 @@ function EnableProductReview(){
             }
     
         function createProductReview(element){
-            var addReviewURL = "etapi/presale/productreview/add";     
+            var addReviewURL = "etapi/presale/productreview/add",reviewMedia = new FormData();
             this.saveProductReview = function saveProductReview(){
                 var review = {productId:options["productId"], customerId:options["customerId"], saleId:options["saleId"]};
 
@@ -82,9 +206,32 @@ function EnableProductReview(){
                         data : JSON.stringify(review),
                         contentType: "application/json",
                         success: function(data){
-                            alert("Comentario guardado con éxito");
+                            if(options["showReviewElement"])
+                                self.modules.productReviewModules.enable.loadModules.showProductReviews.productReviews();
+                            if(options["saveProductCallBack"])
+                                options["saveProductCallBack"]();
                         }
                     });
+            }
+            
+            this.prepareEtrustUploadImg = function prepareEtrustUploadImg(fi){
+                var files = fi.files;
+                var f = files[0];
+                 var reader = new FileReader();
+                
+                // Closure to capture the file information.
+                reader.onload = (function(theFile) {
+                    return function(e) {
+                      e.target.result;
+                        theFile.fileName;
+                    };
+                  })(f);
+                
+                reader.readAsBinaryString(f);
+            }
+            
+            this.prepareEtrustUploadVid = function prepareEtrustUploadVid(fi){
+                alert("me graduo2!");
             }
                  
             if(!productRevMetaData || productRevMetaData.functionalities.length == 0) return;
@@ -108,7 +255,6 @@ function EnableProductReview(){
             }
             
             function getElementValue(item,prefix){
-
                 switch (item.htmlElement){
 
                         case "forminputtext":
@@ -118,16 +264,27 @@ function EnableProductReview(){
                             return $("#"+prefix+item.visualId).val();
                         break;
                         case "formstars":
-                            return $("#"+prefix+item.visualId).val();
+                            var checks = $("#"+prefix+item.visualId+" input[type='radio']");
+                        
+                            for(var c in checks){
+                                if (checks[c].checked)
+                                    return checks[c].value;
+                            }
+                        
                         break;
                         case "formcheck":
-                            return $("#"+prefix+item.visualId).attr("checked")?true:false;
+                            return $("#"+prefix+item.visualId).attr("checked")?"1":"0";
                         break;
                         case "formdate":
                             return $("#"+prefix+item.visualId).val();
                         break;
+                    case "formfileinputimg":
+                            return $("#"+prefix+item.visualId).val();
+                        break;
+                    case "formfileinputvid":
+                            return $("#"+prefix+item.visualId).val();
+                        break;
                     }
-
             }
              
 
@@ -155,6 +312,12 @@ function EnableProductReview(){
                     case "formdate":
                         htmlData += Utils.Visual.addFormDate(ele,item,"create");
                     break;
+                    case "formfileinputimg":
+                        htmlData += Utils.Visual.addImginput(ele,item,"create");
+                    break;
+                    case "formfileinputvid":
+                        htmlData += Utils.Visual.addVidinput(ele,item,"create");
+                    break;
                 }
 
             });
@@ -165,9 +328,8 @@ function EnableProductReview(){
     
         function showProductReview(){
         
-            if(!productRevMetaData || !productRevMetaData.functionalities)
-                    return;
-            
+            var rateReviewUrl = "/etapi/presale/productreview/ratecomment";
+            this.productRev = [];
             this.productReviews = function getProductReview(){
                 var url =  etHost +  getProductReviewUrl;
                 $.ajax({
@@ -176,8 +338,9 @@ function EnableProductReview(){
                         contentType: "application/json",
                         success: function(data){
                             if(data.response)
-                            if(options["displayData"])
+                            if(options["displayData"]){
                                 displayReviews(data.response);
+                            }
                             else
                                 options["callBackReviews"](data);
                         },
@@ -187,6 +350,73 @@ function EnableProductReview(){
                     });
             }
             
+            this.rateReview = function rateReview(reviewId, rate){
+                
+                self = this;
+                
+                var rating = {reviewId:reviewId,rate:rate};
+                 var url =  etHost +  rateReviewUrl;
+                $.ajax({
+                    type:"POST",
+                    url: url,
+                    contentType: "application/json",
+                    data : JSON.stringify(rating),
+                    success:function(data){
+                        self.modules.productReviewModules.enable.loadModules.showProductReviews.productReviews();
+                        if(options["rateCommentCallBack"])
+                             options["rateCommentCallBack"]();
+                    }
+                });
+            }
+            
+             this.orderReviews = function orderReviews(criteria){
+                
+                 var url =  etHost +  getProductReviewUrl;
+                 var reviews = [];
+                $.ajax({
+                        type:"GET",
+                        url:  etHost +  getProductReviewUrl +"?productId="+options["productId"],
+                        contentType: "application/json",
+                        success: function(data){
+                            if(data.response)
+                            if(options["displayData"]){
+                                sort( data.response );
+                            }
+                            else
+                                options["callBackReviews"](data);
+                        },
+                        fail: function(data){
+                            console.log("Error in ETRUST" + data);
+                        }
+                    });
+                 
+                 function sort(reviews){
+                switch (criteria.value){
+                
+                    case "createdDate":
+                        
+                        reviews.sort(function(a,b){
+                            return a.reviewDate - b.reviewDate;
+                        });
+                        
+                        break;
+                    case "commentRate":
+                        
+                        reviews.sort(function(a,b){
+                            return  b.reviewCalification - a.reviewCalification;
+                        });
+                        
+                        break;
+                }
+                 
+                 displayReviews(reviews);
+                 }
+                
+            }
+            
+            if(!productRevMetaData || !productRevMetaData.functionalities)
+                    return;
+                        
             function getFuncByName(name){
                 
                 var found;
@@ -202,18 +432,38 @@ function EnableProductReview(){
                 return found;
             }
             
+           
+            
             function displayReviews(reviews){
                 var htmlData = Utils.Visual.openRowDiv();
                 
                 var ele = $("#"+options["showReviewElement"]);
+                ele.html("");
+                
+               /* htmlData += Utils.Visual.openRowDiv();*/
+                htmlData += Utils.Visual.createSelect([{name:"Ordenar por",value:"?"},
+                                                       {name:"Fecha de comentario",value:"createdDate"},
+                                                       {name:"Reputación de comentario",value:"commentRate"}],"Ordenar por:");
+                /*htmlData += Utils.Visual.closeDiv();*/
                 
                 $.each(reviews,function(i,item){
-                    htmlData += Utils.Visual.openColDiv(12);
+                    var reviewReputation = 0;
+                    if(item.etCalificacionProducto > 0){
+                        reviewReputation = item.etCalificacionProducto > 3? 1:0;
+                    }else if(item.etetCalificacionServicioCliente){
+                        reviewReputation = item.etetCalificacionServicioCliente > 3? 1:0;
+                    }else{
+                        reviewReputation = item.reviewCalification > 0? 1:0;
+                    }
+                    
+                    htmlData += Utils.Visual.openRowDiv(1,reviewReputation);
+                    htmlData += Utils.Visual.rightParagr(item.reviewDate);
+                    htmlData += Utils.Visual.openColDiv(9);
+                    
                     for(var prop in item){
-                        var data = item[prop];
+                        var data = item[prop]+"";
                         var func = getFuncByName(prop);
-                        if(func && func.status ==="active" && data && data!="" && data!="null"){
-                            
+                        if(func && func.status ==="active" && data != undefined && data!="" && data!="null"){
                             htmlData += Utils.Visual.openColDiv(6);
                             htmlData += Utils.Visual.boldText(func.name);
                             htmlData += Utils.Visual.closeDiv();
@@ -230,36 +480,29 @@ function EnableProductReview(){
                                 break;
                                 case "formstars":
                                     htmlData += Utils.Visual.openColDiv(6);
+                                    htmlData += Utils.Visual.addInformativeFormStar(data);
                                     htmlData += Utils.Visual.closeDiv();
-                                    htmlData += Utils.Visual.openColDiv(6);
-                                    htmlData += Utils.Visual.addFormStars(ele,func,"create",{hideLabel:true});
-                                    htmlData += Utils.Visual.closeDiv();
-                                    $("input[name="+func.visualId+"][value=" + data + "]").prop('checked', true);
                                 break;
                                 case "formcheck":
                                     htmlData += Utils.Visual.openColDiv(6);
-                                    htmlData += Utils.Visual.paragr((data =="on"?"Sí":"No"));
+                                    htmlData += Utils.Visual.paragr((data =="1"?"Sí":"No"));
                                     htmlData += Utils.Visual.closeDiv();
-                                    $("input[name="+func.visualId+"][value=" + data + "]").prop('checked', true);
                                 break;
                                 case "formdate":
-                                    htmlData += Utils.Visual.openColDiv(6);
-                                    htmlData += Utils.Visual.addFormStars(ele,func,"create");
-                                    htmlData += Utils.Visual.closeDiv();
-                                    $("input[name="+func.visualId+"][value=" + data + "]").prop('checked', true);
                                 break;
                             }
                         }
                     }
-                    htmlData += Utils.Visual.addLink("Ver imágenes y videos de esta reseña",item.reviewId);
+                   // htmlData += Utils.Visual.addLink("Ver imágenes y videos de esta reseña",item.reviewId);
                     htmlData += Utils.Visual.lnBreak();
                     htmlData += Utils.Visual.closeDiv();
-                    
-                    
-                    
+                    htmlData += Utils.Visual.openColDiv(3);
+                    htmlData += Utils.Visual.addReviewThumbs(item.reviewId,item.reviewCalification);
+                    htmlData +=Utils.Visual.closeDiv();    
+                    htmlData +=Utils.Visual.closeDiv();
                 });
                 
-                Utils.Visual.closeDiv();
+                htmlData +=Utils.Visual.closeDiv();
                 ele.append(htmlData);
             }
             
@@ -273,10 +516,12 @@ function EnableProductReview(){
                this.createProductReview  = new createProductReview(options["createReviewElement"]);
             }
             if(options["showReviewElement"]){
-               this.showProductReviews  = new showProductReview(options["createReviewElement"]);
+               this.showProductReviews  = new showProductReview(options["showReviewElement"]);
             }
         }
 }
+    
+    
 
         
 function EtrustUtilities(){
@@ -291,6 +536,24 @@ function EtrustUtilities(){
 
             return input;
         }
+        
+        this.addImginput = function addImgInput(element,item,prefix){
+            var input = '<div class="form-group">\n';
+            input += '<label for="'+prefix+item.visualId+'">'+item.name+'</label>\n';
+            input += '<input onchange="etrust.psRvfilImg(this)" accept=".jpg,.jpeg,.png" type="file" id="'+prefix+item.visualId+'">';
+            input += '<p class="help-block">Sube una imagen (.jpg, .jpeg, .png) para que otros usuarios vean el producto</p>\n';
+            input +='</div>\n';
+            return input;
+        }
+        
+        this.addVidinput = function addVidInput(element,item,prefix){
+            var input = '<div class="form-group">\n';
+            input += '<label for="'+prefix+item.visualId+'">'+item.name+'</label>\n';
+            input += '<input onchange="etrust.psRvfilVid(this)" accept=".mpg,,mpeg,.mp4" type="file" id="'+prefix+item.visualId+'">';
+            input += '<p class="help-block">Sube un video (.mpg,.mp4,.mpeg) para que otros usuarios vean el producto</p>\n';
+            input +='</div>\n';
+            return input;
+        }
 
         this.addFormStars = function addFormStars(element,item,prefix,labelopt){
 
@@ -298,19 +561,33 @@ function EtrustUtilities(){
             if(!labelopt || !labelopt["hideLabel"])
             input += "<label for='"+prefix+item.visualId+"'>"+item.name+"</label>\n";
 
-                input +='<div class="star_content">';
+                input +='<div id='+prefix+item.visualId+'>';
 
-                    input +='<input class="star not_uniform" style="margin-right: 2px; height:inherit; width:inherit;" type="radio" name = '+prefix+item.visualId+' value="1" />\n';
-                    input +='<input class="star not_uniform" style="margin-right: 2px; height:inherit; width:inherit;" type="radio" name = '+prefix+item.visualId+' value="2" />\n';
-                    input +='<input class="star not_uniform" style="margin-right: 2px; height:inherit; width:inherit;" type="radio" name = '+prefix+item.visualId+' value="3" />\n';
-                    input +='<input class="star not_uniform" style="margin-right: 2px; height:inherit; width:inherit;" type="radio" name = '+prefix+item.visualId+' value="4" />\n';
-                    input +='<input class="star not_uniform" style="margin-right: 2px; height:inherit; width:inherit;" type="radio" name = '+prefix+item.visualId+' value="5" />\n';
-                    input +='<div class="clearfix"></div>';
+                    input +='1<input style="margin-right: 2px; height:inherit; width:inherit;" type="radio" name =" '+prefix+item.visualId+'" value="1" />\n';
+                    input +='2<input style="margin-right: 2px; height:inherit; width:inherit;" type="radio" name =" '+prefix+item.visualId+'" value="2" />\n';
+                    input +='3<input style="margin-right: 2px; height:inherit; width:inherit;" type="radio" name =" '+prefix+item.visualId+'" value="3" />\n';
+                    input +='4<input style="margin-right: 2px; height:inherit; width:inherit;" type="radio" name =" '+prefix+item.visualId+'" value="4" />\n';
+                    input +='5<input style="margin-right: 2px; height:inherit; width:inherit;" type="radio" name =" '+prefix+item.visualId+'" value="5" />\n';
                 input +='</div>\n';
             input +='</div>\n';
 
 
             return input;
+        }
+        
+        this.addInformativeFormStar = function addInformativeFormStar(selected){
+        
+        var input = "<div class = 'form-group'>\n";
+
+            input +='1<input type ="radio" value="1"'+(selected == 1?'checked':'')+' disabled/>\n';
+            input +='2<input type ="radio" value="2"'+(selected == 2?'checked':'')+' disabled/>\n';
+            input +='3<input type ="radio" value="3"'+(selected == 3?'checked':'')+' disabled/>\n';
+            input +='4<input type ="radio" value="4"'+(selected == 4?'checked':'')+' disabled/>\n';
+            input +='5<input type ="radio" value="5"'+(selected == 5?'checked':'')+' disabled/>\n';
+
+            input +='</div>\n';
+            return input;
+            
         }
 
         this.addFormCheck = function addFormCheck(element,item,prefix){
@@ -345,8 +622,12 @@ function EtrustUtilities(){
             return input;
         }
         
-        this.openRowDiv = function(){
-            var input = "<div class = 'row'>\n";
+        this.openRowDiv = function(border,scale){
+            var input = '';
+            if(border)
+                input += "<div class = 'row' style='width: 98%;margin-left: 20px;border-bottom: 1px solid #d6d4d4;padding: 20px;background-color:"+(scale>0?"rgba(74, 187, 26, 0.22)":"rgba(236, 4, 4, 0.25)")+";'>";
+            else
+                input += "<div class = 'row'>\n";
             return input;
         }
         
@@ -357,6 +638,23 @@ function EtrustUtilities(){
         
         this.closeDiv = function(){ 
             return "</div>\n";
+        }
+        
+        this.createSelect = function(options,label){
+        
+            var input = "<div clas='col-md-12' style='margin-left: 50px; padding-right:10px'"; 
+            input += "<div class = 'form-group'>\n";
+             input += "<label>"+label+"</label>\n";
+
+            input +="<select class='form-control' onchange='etrust.psOrdCm(this)'>";
+            for (var op in options){
+                input += "<option value='"+options[op].value+"'>"+options[op].name+"</option>"
+            }
+            input +="</select>";
+            input +="</div>"
+            input +="</div>"
+            return input;
+            
         }
         
         this.lnBreak = function(){ 
@@ -371,8 +669,33 @@ function EtrustUtilities(){
             return "<p>"+text+"</p>\n";
         }
         
+        this.rightParagr = function(text){ 
+            return "<div class='row pull-right'>"+text+"</div>\n";
+        }
+        
         this.addLink = function(text,link){
             return "<a href'#' style='color:blue;cursor:pointer' onclick="+'"alert('+"'videos reseña id:"+link+"'"+');">'+text+"</a>\n"
+        }
+        
+        this.addReviewThumbs = function (reviewId,reputation){
+        
+            var input = "<div class='row' style='height: 90px;line-height: 90px;'>\n";
+                            input +="<div class='col-md-12'>\n";
+                                input +="<div class='col-md-4'>\n";
+                                    input += reputation+"&nbsp<icon style='color:red' class='icon-heart icon-2'></icon>\n";
+                                input += "</div>\n";
+                                input +="<div class='col-md-4'>\n";
+                                    input += "<a href='javascript:void(0);' onclick='etrust.psCaRev("+reviewId+",1)'>\n<i class='icon-thumbs-up-alt icon-2' style='color:green'></i></a>\n"
+                                input += "</div>\n";
+                                input +="<div class='col-md-4'>\n";
+                                    input += "<a href='javascript:void(0);' onclick='etrust.psCaRev("+reviewId+",-1)'>\n<i class='icon-thumbs-down-alt icon-2' style='color:red'></i></a>\n"
+                                input += "</div>\n";
+                            input += "</div>\n";
+            
+                        input += "</div>\n";
+            
+            return input;
+            
         }
     }
     
@@ -380,3 +703,7 @@ function EtrustUtilities(){
 }
     
 }
+
+
+
+

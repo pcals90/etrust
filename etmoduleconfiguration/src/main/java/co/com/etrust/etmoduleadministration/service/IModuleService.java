@@ -11,6 +11,7 @@ import co.com.etrust.etmoduleconfiguration.response.dto.ETExistingInitialConfDTO
 import co.com.etrust.etmoduleconfiguration.response.dto.ETFunctionalities;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETMetaDataColumn;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETMetaDataTable;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETRelationMetaData;
 
 public interface IModuleService {
 
@@ -34,8 +35,10 @@ public interface IModuleService {
 
 	public List<ETFunctionalities> getFunctionalitiesByModuleId(Integer moduleId) throws ConfigurationException, IOException;
 
-	public Boolean saveConfiguration(List<ETFunctionalities> functionalities)throws ConfigurationException, IOException;
+	public Boolean saveConfiguration(ETRelationMetaData metadata)throws ConfigurationException, IOException;
 
 	public List<ETApiModuleDTO> getFunctionalities(String serviceName)throws ConfigurationException, IOException;
+	
+	public List<ETMetaDataTable> getMetaDataTableByModuleId(Integer moudleId)throws ConfigurationException, IOException;
 	
 }

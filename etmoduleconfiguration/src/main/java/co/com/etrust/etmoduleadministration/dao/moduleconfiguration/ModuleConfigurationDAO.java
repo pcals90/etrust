@@ -35,10 +35,42 @@ public class ModuleConfigurationDAO implements IModuleConfigurationDAO {
 		Query query = sess
 				.createSQLQuery(
 						"SELECT COLUMN_NAME as columnName,COLUMN_KEY as columnKey FROM information_schema.columns where TABLE_NAME=:tableName AND TABLE_SCHEMA = :dbname")
-				.setString("tableName", tableName).setString("dbname", dbname)
-				.setString("dbname", dbname).setResultTransformer(Transformers.aliasToBean(ETMetaDataColumn.class));
+				.setString("tableName", tableName).setString("dbname", dbname).setString("dbname", dbname)
+				.setResultTransformer(Transformers.aliasToBean(ETMetaDataColumn.class));
 
 		return query.list();
+	}
+
+	@Override
+	public List<ETMetaDataTable> getMetaDataTableByModuleId(Integer moudleId) {
+
+		Session sess = ETDBConnectionManager.getCurrentSession();
+
+		Query query = sess
+				.createSQLQuery("Select table_id as tableId, table_name as tableName "
+						+ " from et_meta_tables emt, et_modules em " + " where emt.module_id = em.module_id"
+						+ " AND em.module_id = :moduleId")
+				.setInteger("moduleId", moudleId).setResultTransformer(Transformers.aliasToBean(ETMetaDataTable.class));
+
+		List<ETMetaDataTable> tables = query.list();
+
+		for (ETMetaDataTable table : tables) {
+
+			Query query2 = sess
+					.createSQLQuery("Select column_name as columnName, column_type as columnKey"
+							+ " FROM et_meta_columns emc, et_meta_tables emt " + " where emc.table_id = :tableId"
+							+ " AND emc.table_id = emt.table_id")
+					.setInteger("tableId", table.getTableId())
+					.setResultTransformer(Transformers.aliasToBean(ETMetaDataColumn.class));
+
+			List<ETMetaDataColumn> columns = query2.list();
+
+			table.setColumns(columns);
+
+		}
+
+		return tables;
+
 	}
 
 }

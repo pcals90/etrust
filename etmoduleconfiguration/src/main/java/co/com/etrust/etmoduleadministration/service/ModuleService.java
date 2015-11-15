@@ -13,6 +13,7 @@ import co.com.etrust.etmoduleconfiguration.response.dto.ETExistingInitialConfDTO
 import co.com.etrust.etmoduleconfiguration.response.dto.ETFunctionalities;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETMetaDataColumn;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETMetaDataTable;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETRelationMetaData;
 
 @Service("moduleService")
 public class ModuleService implements IModuleService{
@@ -51,6 +52,8 @@ public class ModuleService implements IModuleService{
 	public ETExistingInitialConfDTO readExistingConfFromFile() throws ConfigurationException, IOException {
 		return metadataService.readExistingConfFromFile();
 	}
+	
+	
 
 	@Override
 	public boolean saveNewInitialConfiguration(ETExistingInitialConfDTO conf) throws ConfigurationException, IOException {
@@ -79,14 +82,20 @@ public class ModuleService implements IModuleService{
 	}
 
 	@Override
-	public Boolean saveConfiguration(List<ETFunctionalities> functionalities)
+	public Boolean saveConfiguration(ETRelationMetaData metadata)
 			throws ConfigurationException, IOException {
-		return availabilityService.saveConfiguration(readExistingConfFromFile(),functionalities);
+		return availabilityService.saveConfiguration(readExistingConfFromFile(), metadata);
 	}
 
 	@Override
 	public List<ETApiModuleDTO> getFunctionalities(String serviceName) throws ConfigurationException, IOException {
 		return directoryService.getFunctionalities(readExistingConfFromFile(),serviceName);
+	}
+
+	@Override
+	public List<ETMetaDataTable> getMetaDataTableByModuleId(Integer moudleId)
+			throws ConfigurationException, IOException {
+		return metadataService.getMetaDataTableByModuleId(readExistingConfFromFile(),moudleId);
 	}
 	
 }

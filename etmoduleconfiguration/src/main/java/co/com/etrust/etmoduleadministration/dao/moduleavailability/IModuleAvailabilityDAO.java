@@ -4,6 +4,7 @@ import java.util.List;
 
 import co.com.etrust.etmoduleconfiguration.response.dto.ETCurrentModules;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETFunctionalities;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETRelationMetaData;
 
 public interface IModuleAvailabilityDAO {
 
@@ -18,5 +19,5 @@ public interface IModuleAvailabilityDAO {
 
 	public List<ETFunctionalities> getFunctionalitiesByModuleId(Integer moduleId);
 
-	public boolean saveConfiguration(List<ETFunctionalities> functionalities);
+	public boolean saveConfiguration(ETRelationMetaData metadata);
 }

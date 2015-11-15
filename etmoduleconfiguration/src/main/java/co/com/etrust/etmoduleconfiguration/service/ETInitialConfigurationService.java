@@ -13,6 +13,7 @@ import co.com.etrust.etmoduleconfiguration.response.dto.ETExistingInitialConfDTO
 import co.com.etrust.etmoduleconfiguration.response.dto.ETFunctionalities;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETMetaDataColumn;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETMetaDataTable;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETRelationMetaData;
 
 @Service("initialConfService")
 public class ETInitialConfigurationService {
@@ -70,8 +71,8 @@ public class ETInitialConfigurationService {
 		return moduleService.getFunctionalitiesByModuleId(moduleId);
 	}
 
-	public Boolean saveConfiguration(List<ETFunctionalities> functionalities) throws ConfigurationException, IOException {
-		return moduleService.saveConfiguration(functionalities);
+	public Boolean saveConfiguration(ETRelationMetaData metadata) throws ConfigurationException, IOException {
+		return moduleService.saveConfiguration(metadata);
 	}
 
 }

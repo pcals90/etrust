@@ -63,7 +63,7 @@ public class PresaleService implements IPresaleService {
 	public Boolean rateReview(ETReviewRateDTO rate) throws ConfigurationException, IOException {
 		Transaction tx = ETDBConnectionManager.initTransaction(moduleService.readExistingConfFromFile());
 		try{
-			Boolean ret =  presaleDao.getProductReview(rate);
+			Boolean ret =  presaleDao.rateComment(rate);
 			ETDBConnectionManager.closeAndCommitTransaction(tx);
 			return ret;
 		}catch(RuntimeException re){
