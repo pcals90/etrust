@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.com.etrust.etapi.request.ETReviewDTO;
 import co.com.etrust.etapi.request.ETReviewFiltersDTO;
-import co.com.etrust.etapi.request.ETReviewRateDTO;
 import co.com.etrust.etapi.response.dto.ETApiResponseDTO;
 import co.com.etrust.etapi.response.dto.ETApiResponseStatus;
 import co.com.etrust.etapi.service.postsale.IPostsaleService;
 import co.com.etrust.etapi.service.presale.IPresaleService;
+import co.com.etrust.etapi.service.report.IReportService;
 
 @Controller
 public class ETApiController {
@@ -24,6 +24,9 @@ public class ETApiController {
 	
 	@Autowired
 	private IPresaleService presaleService;
+	
+	@Autowired
+	private IReportService reportService;
 
 	
 	@RequestMapping(value = "/etapi/test", method = RequestMethod.GET, produces = "application/json")
@@ -78,13 +81,13 @@ public class ETApiController {
 	}
 	
 	
-	@RequestMapping(value = "/etapi/presale/productreview/rate", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Object getProductReview(@RequestBody final ETReviewRateDTO rate) {
+	@RequestMapping(value = "/etapi/reports/getReportByModuleId", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody Object getReportByModuleId(@RequestParam final Integer moduleId) {
 
 		try{
-		return new ETApiResponseDTO(presaleService.rateReview(rate), "Ok",
-				ETApiResponseStatus.SUCCESS);
-		}catch(Exception e){
+			return new ETApiResponseDTO(reportService.getReportByModuleId(moduleId), "Ok",
+					ETApiResponseStatus.SUCCESS);
+			}catch(Exception e){
 			e.printStackTrace();
 			return new ETApiResponseDTO(null, "FAIL :: "+e.getMessage(),
 					ETApiResponseStatus.ERROR);

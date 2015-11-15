@@ -11,6 +11,8 @@ public interface IModuleConfigurationDAO {
 
 	List<ETMetaDataColumn> getColumnInformationByTableName(String dbName, String tableName);
 
+	List<ETMetaDataTable> getMetaDataTableByModuleId(Integer moudleId);
+
 
 
 }

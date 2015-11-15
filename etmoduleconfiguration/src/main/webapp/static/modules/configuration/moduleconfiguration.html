@@ -639,22 +639,44 @@
 			});
 			
 			
-			
 			$("#saveSettings").click(function (){
 				
 				var checks = $("#divFuncionalities :checkbox");
 				
+				var metadata = {};
+				
+				var table = {'tableName':$("#dbProductTables option:selected").val()};
+				var columns = [];
+				var tables = [];
+				$("#dbProductColumns option:selected").each(function (){
+					var item = $(this);
+					var col = {};
+					if(item.html().indexOf("(PRI)") > 1){
+						col.columnKey = "PRI";
+					}
+					
+					col.columnName = item.html().replace("(PRI)","");
+					col.columnName = col.columnName.replace("(MUL)","");
+					columns.push(col);
+				});
+				
 				var funcs =[];
 				$.each(checks, function(i,item){
-					
 					funcs.push({"id":item.value,"status":(item.checked?'active':'inactive'),"moduleId":1});
-					
 				});
+				
+				table.columns = columns;
+
+				tables.push(table);
+				metadata.tables= tables;
+				metadata.functionalities = funcs;
+				metadata.moduleId = $("#addedModules").val();
+				
 				$.ajax({
 					type: "POST",
 					url : "/etmoduleconfiguration/initialconf/saveConfiguration",
 					dataType : "json",
-					data : JSON.stringify(funcs),
+					data : JSON.stringify(metadata),
 					contentType: "application/json",
 					success: function (data){
 						if(data.response)

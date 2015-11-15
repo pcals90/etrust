@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 import co.com.etrust.etmoduleadministration.dao.connection.ETDBConnectionManager;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETCurrentModules;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETFunctionalities;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETMetaDataColumn;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETMetaDataTable;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETRelationMetaData;
 
 @Repository("moduleAvailabilityDAO")
 public class ModuleAvailabilityDAO implements IModuleAvailabilityDAO {
@@ -82,10 +85,39 @@ public class ModuleAvailabilityDAO implements IModuleAvailabilityDAO {
 	}
 
 	@Override
-	public boolean saveConfiguration(List<ETFunctionalities> functionalities) {
+	public boolean saveConfiguration(ETRelationMetaData metadata) {
 		Session sess = ETDBConnectionManager.getCurrentSession();
 		
-		for (ETFunctionalities func : functionalities) {
+		Query query1 = sess
+				.createSQLQuery("delete from et_meta_tables where module_id = :moduleId").setInteger("moduleId", metadata.getModuleId());
+		query1.executeUpdate();
+		
+		for (ETMetaDataTable table : metadata.getTables()) {
+			
+			Query createTableqr = 
+					sess.createSQLQuery(""
+							+ " INSERT INTO et_meta_tables (table_id, table_name,module_id) "
+							+ " VALUES (0, :tableName,:moduleId)");
+			createTableqr.setString("tableName", table.getTableName());
+			createTableqr.setInteger("moduleId", metadata.getModuleId());
+			
+			createTableqr.executeUpdate();
+			
+			for (ETMetaDataColumn column : table.getColumns()) {
+				
+				Query createColumnqr = 
+						sess.createSQLQuery("INSERT INTO et_meta_columns (column_name, column_type, table_id, column_id) "
+								+ "VALUES (:columnName,:columnType,(select max(table_id) from et_meta_tables),0)");
+				createColumnqr.setString("columnName", column.getColumnName());
+				createColumnqr.setString("columnType", column.getColumnKey());
+				
+				createColumnqr.executeUpdate();
+				
+			}
+			
+		}
+		
+		for (ETFunctionalities func : metadata.getFunctionalities()) {
 			Query query = sess
 					.createSQLQuery(
 							"UPDATE et_functionalities set status = :status WHERE functionality_id=:id and module_id = :moduleId");

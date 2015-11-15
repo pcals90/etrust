@@ -1,7 +1,5 @@
 package co.com.etrust.etmoduleconfiguration.controller;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.com.etrust.etmoduleconfiguration.response.dto.ETConfigurationResponseDTO;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETExistingInitialConfDTO;
-import co.com.etrust.etmoduleconfiguration.response.dto.ETFunctionalities;
+import co.com.etrust.etmoduleconfiguration.response.dto.ETRelationMetaData;
 import co.com.etrust.etmoduleconfiguration.response.dto.ETResponseStatus;
 import co.com.etrust.etmoduleconfiguration.service.ETInitialConfigurationService;
 import javassist.bytecode.stackmap.TypeData.ClassName;
@@ -179,11 +177,10 @@ public class ETConfigurationController {
 	}
 	
 	@RequestMapping(value = "/initialconf/saveConfiguration", headers = "content-type=application/x-www-form-urlencoded", method = RequestMethod.POST,consumes="application/json", produces = "application/json")
-	public @ResponseBody Object saveConfiguration(@RequestBody final List<ETFunctionalities> functionalities) {
+	public @ResponseBody Object saveConfiguration(@RequestBody final ETRelationMetaData metadata) {
 
-		
 		try{
-		return new ETConfigurationResponseDTO(initialConfService.saveConfiguration(functionalities), "Ok",
+		return new ETConfigurationResponseDTO(initialConfService.saveConfiguration(metadata), "Ok",
 				ETResponseStatus.SUCCESS);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -191,6 +188,5 @@ public class ETConfigurationController {
 					ETResponseStatus.ERROR);
 		}
 	}
-	
 
 }

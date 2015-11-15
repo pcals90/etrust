@@ -67,6 +67,18 @@ class ModuleMetadataService {
 	
 		
 	}
+
+	public List<ETMetaDataTable> getMetaDataTableByModuleId(ETExistingInitialConfDTO etExistingInitialConfDTO,Integer moudleId) {
+		Transaction tx = ETDBConnectionManager.initTransaction(etExistingInitialConfDTO);
+		try{
+			List<ETMetaDataTable> ret =  configurationDAO.getMetaDataTableByModuleId(moudleId);
+			ETDBConnectionManager.closeAndCommitTransaction(tx);
+			return ret;
+		}catch(RuntimeException re){
+			ETDBConnectionManager.manageTransactionException(re, tx);
+		}
+		return new ArrayList<ETMetaDataTable>();
+	}
 	
 	
 }
